@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+</head>
+<body>
+    <form action='/auth/register' method='POST'>
+        <label>이름</label>
+        <input type="text" name="username">
+        <label>이메일</label>
+        <input type="email" name="email">
+        <label>비밀번호</label>
+        <input type="password" name="password">
+        <label>비밀번호 확인</label>
+        <input type="password" name="repeat_pw">
+    </form>
+</body>
+</html>

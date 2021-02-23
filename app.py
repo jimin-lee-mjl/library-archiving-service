@@ -12,5 +12,8 @@ with app.app_context():
     from db import init_db
     init_db()
 
+    import auth
+    app.register_blueprint(auth.bp)
+
 if __name__ == '__main__':
     app.run

@@ -1,11 +1,13 @@
-from flask import Flask
+from flask import Flask, g, render_template
+from config import SECRET_KEY
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = SECRET_KEY
 
 
 @app.route('/')
-def hello_world():
-    return 'Hello, World!'
+def dashboard():
+    return render_template('dash.html', username = g.user.username)
 
 # any extensions using app as current_app should be inside
 with app.app_context():

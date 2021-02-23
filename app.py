@@ -1,4 +1,4 @@
-from flask import Flask, g, render_template
+from flask import Flask, g, render_template, url_for, redirect
 from config import SECRET_KEY
 
 app = Flask(__name__)
@@ -7,7 +7,11 @@ app.config['SECRET_KEY'] = SECRET_KEY
 
 @app.route('/')
 def dashboard():
-    return render_template('dash.html', username = g.user.username)
+    if g.user:
+        return render_template('dash.html', username = g.user.username)
+    else:
+        return redirect(url_for('auth.login'))
+    
 
 # any extensions using app as current_app should be inside
 with app.app_context():

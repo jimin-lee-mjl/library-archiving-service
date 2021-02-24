@@ -12,6 +12,7 @@ class BookMain(Resource):
         books = Book.query.all()
         for book in books:
             book_list.append({
+                'id': book.id,
                 'name': book.name,
                 'rating': book.rating,
                 'available': book.available

@@ -1,10 +1,12 @@
 from flask import current_app
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from config import DB_URI
 
 current_app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
 current_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(current_app)
+migrate = Migrate(current_app, db) 
 
 
 class User(db.Model):
@@ -32,23 +34,4 @@ class Book(db.Model):
 def init_db():
     # bind db and app
     db.init_app(current_app)
-    db.drop_all()
     db.create_all()
-
-    sample_book1 = Book(
-        name='Harry Potter',
-        author='Rolling',
-        pages=250,
-        rating=4,
-        available=10
-    )
-    sample_book2 = Book(
-        name='LOTR',
-        author='Tolkin',
-        pages=1000,
-        rating=5,
-        available=4
-    )
-    db.session.add(sample_book1)
-    db.session.add(sample_book2)
-    db.session.commit()

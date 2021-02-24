@@ -10,7 +10,9 @@
     <h1>hi</h1>
     {% for book in book_list %}
         <div class="book_container">
-            <span class="book_title">{{ book.name }}</span>
+            <a href="{{ url_for('book.book_detail', book_id=book.id) }}">
+                <span class="book_title">{{ book.name }}</span>
+            </a>
             <span class="book_rating">{{ book.rating }}</span>
             <span class="book_available">{{ book.available }}</span>
             <button class="borrow_btn">대여하기</button>

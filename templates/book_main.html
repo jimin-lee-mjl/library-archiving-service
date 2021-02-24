@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>엘리스 도서관</title>
+</head>
+<body>
+    <h1>hi</h1>
+    {% for book in book_list %}
+        <div class="book_container">
+            <span class="book_title">{{ book.name }}</span>
+            <span class="book_rating">{{ book.rating }}</span>
+            <span class="book_available">{{ book.available }}</span>
+            <button class="borrow_btn">대여하기</button>
+        </div>
+    {% endfor %}
+</body>
+</html>

@@ -8,10 +8,10 @@ app.config['SECRET_KEY'] = SECRET_KEY
 @app.route('/')
 def dashboard():
     if g.user:
-        return render_template('dash.html', username = g.user.username)
-    else:
-        return redirect(url_for('auth.login'))
-    
+        return render_template('dash.html', username=g.user.username)
+
+    return redirect(url_for('auth.login'))
+
 
 # any extensions using app as current_app should be inside
 with app.app_context():
@@ -20,6 +20,7 @@ with app.app_context():
 
     import auth
     app.register_blueprint(auth.bp)
+
 
 if __name__ == '__main__':
     app.run

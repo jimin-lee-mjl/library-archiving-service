@@ -18,17 +18,17 @@ class User(db.Model):
 
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(30), unique=True)
+    name = db.Column(db.String(50), unique=True)
     author = db.Column(db.String(30))
     publisher = db.Column(db.String(30))
     publication_date = db.Column(db.Date)
     pages = db.Column(db.Integer)
-    isbn = db.Column(db.Integer)
+    isbn = db.Column(db.String(50))
     description = db.Column(db.Text)
     link = db.Column(db.Text)
-    image = db.Column(db.String(10))
-    rating = db.Column(db.Integer)
-    available = db.Column(db.Integer)
+    image = db.Column(db.String(50))
+    rating = db.Column(db.Integer, default=0)
+    available = db.Column(db.Integer, default=5)
 
 
 def init_db():

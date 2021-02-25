@@ -29,7 +29,7 @@ def login_required(f):
     @wraps(f)
     def check_login(*args, **kwargs):
         if not g.user:
-            return redirect(url_for('auth.login'))
+            return redirect(url_for('.login'))
         return f(*args, **kwargs)
     return check_login
 
@@ -56,7 +56,7 @@ def register():
             )
             db.session.add(new_user)
             db.session.commit()
-            return redirect(url_for('auth.login'))
+            return redirect(url_for('.login'))
 
     return render_template('register.html')
 
@@ -72,7 +72,7 @@ def login():
         if not exist_user:
             flash(AUTH_ERROR['no_user'])
         elif not check_password_hash(exist_user.password, password):
-            flash(AUTH_ERROR['wrong_pw'))
+            flash(AUTH_ERROR['wrong_pw'])
         else:
             session['user_id'] = exist_user.id
             return redirect(url_for('dashboard'))

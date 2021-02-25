@@ -24,7 +24,7 @@ def book_main():
 
         if target.available == 0:
             flash(RENTAL_ERROR['no_stock'])
-            return redirect(url_for('book.book_main'))
+            return redirect(url_for('.book_main'))
 
         rental_book = Rental(
             book_id=book_id
@@ -32,7 +32,7 @@ def book_main():
         current_user.rentals.append(rental_book)
         target.available -= 1
         db.session.commit()
-        return redirect(url_for('personal.rentals'))
+        return redirect(url_for('personal.personal_rental'))
 
     book_list = []
     books = Book.query.all()

@@ -7,7 +7,7 @@
     <title>회원가입</title>
 </head>
 <body>
-    <form action='/auth/register' method='POST'>
+    <form action="{{ url_for('auth.register') }}" method='POST'>
         <label>이름</label>
         <input type="text" name="username" required>
         <label>이메일</label>

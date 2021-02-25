@@ -8,7 +8,7 @@ bp = Blueprint('personal', __name__, url_prefix='/personal')
 
 @bp.route('/book', methods=['GET', 'POST'])
 @login_required
-def rentals():
+def personal_rental():
     current_user = g.user
     if request.method == 'POST':
         book_id = request.form['book_id']
@@ -20,7 +20,7 @@ def rentals():
         rental_book.return_date = (datetime.now()+timedelta(hours=9)).date()
         current_user.rentals.remove(rental_book)
         db.session.commit()
-        return redirect(url_for('personal.rentals'))
+        return redirect(url_for('.personal_rental'))
 
     rental_list = []
     for book in current_user.rentals:

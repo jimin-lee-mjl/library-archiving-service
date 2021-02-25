@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대여 중인 책 모아보기</title>
+</head>
+<body>
+    <h1>hi</h1>
+    {% for book in rentals %}
+        <span>{{ book.name }}</span>
+        <span>{{ book.rental_date }}</span>
+        <form action="{{ url_for('personal.personal_rental') }}" method="POST">
+            <input type="hidden" name="book_id" value="{{ book.book_id }}">
+            <input type="submit" value="반납하기">
+        </form>
+    {% endfor %}
+</body>
+</html>

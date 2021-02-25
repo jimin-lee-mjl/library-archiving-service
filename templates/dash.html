@@ -8,5 +8,7 @@
 </head>
 <body>
     <h1>안녕하세요, {{ username }}!</h1>
+    <a href="{{ url_for('book.book_main') }}"><button>엘리스 도서관</button></a>
+    <a href="{{ url_for('auth.logout') }}"><button>로그아웃</button></a>
 </body>
 </html>

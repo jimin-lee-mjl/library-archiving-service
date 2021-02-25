@@ -12,6 +12,7 @@ from flask import (
 from werkzeug.security import check_password_hash, generate_password_hash
 from functools import wraps
 from db import db, User
+from error_msg import AUTH_ERROR
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -43,11 +44,9 @@ def register():
         exist_user = User.query.filter_by(email=email).first()
 
         if not password == repeat_pw:
-            error_msg = '비밀번호가 다릅니다.'
-            flash(error_msg)
+            flash(AUTH_ERROR['pw_not_match'])
         elif exist_user:
-            error_msg = "이미 존재하는 이메일입니다."
-            flash(error_msg)
+            flash(AUTH_ERROR['exist_email'])
         else:
             hashed_pw = generate_password_hash(password, method="sha256")
             new_user = User(
@@ -71,11 +70,9 @@ def login():
         exist_user = User.query.filter_by(email=email).first()
 
         if not exist_user:
-            error_msg = "존재하지 않는 사용자입니다."
-            flash(error_msg)
+            flash(AUTH_ERROR['no_user'])
         elif not check_password_hash(exist_user.password, password):
-            error_msg = "비밀번호가 틀렸습니다."
-            flash(error_msg)
+            flash(AUTH_ERROR['wrong_pw')
         else:
             session['user_id'] = exist_user.id
             return redirect(url_for('dashboard'))

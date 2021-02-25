@@ -24,8 +24,8 @@ with app.app_context():
     import book
     app.register_blueprint(book.bp)
 
-    import book_api
-    app.register_blueprint(book_api.bp)
+    import personal
+    app.register_blueprint(personal.bp)
 
     # from library import create_library
     # create_library()

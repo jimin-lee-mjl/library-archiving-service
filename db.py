@@ -39,6 +39,7 @@ class Rental(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey(User.id))
     rental_date = db.Column(db.Date, default=(datetime.now()+timedelta(hours=9)).date())
     return_date = db.Column(db.Date)
+    user_id_history = db.Column(db.Integer)
     book_detail = db.relationship('Book')
 
 

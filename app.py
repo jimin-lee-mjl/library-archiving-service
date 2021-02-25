@@ -1,8 +1,10 @@
 from flask import Flask, g, render_template, url_for, redirect
+from flask_bootstrap import Bootstrap
 from config import SECRET_KEY
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = SECRET_KEY
+Bootstrap(app)
 
 
 @app.route('/')

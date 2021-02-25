@@ -1,0 +1,63 @@
+{% extends "bootstrap/base.html" %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet"
+      href="{{url_for('.static', filename='sidebar.css')}}">
+{% endblock %}
+{% block title %}Sidebar{% endblock %}
+
+{% block content %}
+<div class="wrapper">
+    <!-- Sidebar  -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h3>Book & Movie Archives</h3>
+        </div>
+
+        <ul class="list-unstyled components">
+            <p>Dummy Heading</p>
+            <li class="active">
+                <a href="#">Dashboard</a>
+            </li>
+            <li>
+                <a href="#">Elice Library</a>
+            </li>
+            <li>
+                <a href="#">Search Movie</a>
+            </li>
+            <li>
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Archives</a>
+                <ul class="collapse list-unstyled" id="pageSubmenu">
+                    <li>
+                        <a href="#">Book Archive</a>
+                    </li>
+                    <li>
+                        <a href="#">Movie Archive</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">Profile</a>
+            </li>
+            <li>
+                <a href="#">Feedback</a>
+            </li>
+        </ul>
+
+        <ul class="list-unstyled CTAs">
+            <li>
+                <a href="#" class="download">Download source</a>
+            </li>
+            <li>
+                <a href="#" class="article">Back to article</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Page Content  -->
+    <div id="content">
+        {% block main %}{% endblock %}
+    </div>
+</div>
+{% endblock %}

@@ -72,7 +72,7 @@ def login():
         if not exist_user:
             flash(AUTH_ERROR['no_user'])
         elif not check_password_hash(exist_user.password, password):
-            flash(AUTH_ERROR['wrong_pw')
+            flash(AUTH_ERROR['wrong_pw'))
         else:
             session['user_id'] = exist_user.id
             return redirect(url_for('dashboard'))

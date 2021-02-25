@@ -21,14 +21,14 @@ with app.app_context():
     import auth
     app.register_blueprint(auth.bp)
 
-    import book
+    from views import book
     app.register_blueprint(book.bp)
 
-    import personal
+    from views import personal
     app.register_blueprint(personal.bp)
 
     # from library import create_library
-    # create_library()
+    # create_library() 
 
 
 if __name__ == '__main__':

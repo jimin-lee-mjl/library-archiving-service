@@ -27,7 +27,8 @@ def book_main():
             return redirect(url_for('.book_main'))
 
         rental_book = Rental(
-            book_id=book_id
+            book_id=book_id,
+            user_id_history=current_user.id
         )
         current_user.rentals.append(rental_book)
         target.available -= 1

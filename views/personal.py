@@ -16,6 +16,7 @@ def personal_rental():
         rental_book = Rental.query.filter(
             Rental.book_id == book_id and Rental.user_id == current_user.id
         ).first()
+        print('user id:', rental_book.user_id)
         target.available += 1
         rental_book.return_date = (datetime.now()+timedelta(hours=9)).date()
         current_user.rentals.remove(rental_book)

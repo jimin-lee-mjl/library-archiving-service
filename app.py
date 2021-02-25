@@ -27,6 +27,9 @@ with app.app_context():
     import book_api
     app.register_blueprint(book_api.bp)
 
+    # from library import create_library
+    # create_library()
+
 
 if __name__ == '__main__':
     app.run

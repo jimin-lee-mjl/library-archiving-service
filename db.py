@@ -16,6 +16,7 @@ class User(db.Model):
     email = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=False, unique=True)
     rentals = db.relationship('Rental', backref='user')
+    comment = db.relationship('Comment', backref='user')
 
 
 class Book(db.Model):
@@ -31,6 +32,7 @@ class Book(db.Model):
     image = db.Column(db.String(50))
     rating = db.Column(db.Integer, default=0)
     available = db.Column(db.Integer, default=5)
+    comment = db.relationship('Comment', backref='book')
 
 
 class Rental(db.Model):
@@ -39,7 +41,17 @@ class Rental(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey(User.id))
     rental_date = db.Column(db.Date, default=(datetime.now()+timedelta(hours=9)).date())
     return_date = db.Column(db.Date)
+    user_id_history = db.Column(db.Integer)
     book_detail = db.relationship('Book')
+
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text)
+    rating = db.Column(db.Integer)
+    created_at = db.Column(db.Date, default=(datetime.now()+timedelta(hours=9)).date())
+    book_id = db.Column(db.Integer, db.ForeignKey(Book.id))
+    user_id = db.Column(db.Integer, db.ForeignKey(User.id))
 
 
 def init_db():

@@ -29,7 +29,7 @@ def login_required(f):
     @wraps(f)
     def check_login(*args, **kwargs):
         if not g.user:
-            return redirect(url_for('.login'))
+            return redirect(url_for('auth.login'))
         return f(*args, **kwargs)
     return check_login
 
@@ -58,7 +58,7 @@ def register():
             db.session.commit()
             return redirect(url_for('.login'))
 
-    return render_template('register.html')
+    return render_template('auth/register.html')
 
 
 @bp.route('/login', methods=['GET', 'POST'])
@@ -77,11 +77,11 @@ def login():
             session['user_id'] = exist_user.id
             return redirect(url_for('dashboard'))
 
-    return render_template('login.html')
+    return render_template('auth/login.html')
 
 
 @bp.route('/logout')
 @login_required
 def logout():
     session.pop('user_id', None)
-    return render_template('login_required.html')
+    return render_template('auth/login_required.html')

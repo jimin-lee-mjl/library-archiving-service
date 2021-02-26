@@ -1,16 +1,47 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>책 상세보기</title>
-</head>
-<body>
-    <h1>{{ book.name }}</h1>
-    <span>{{ book.author }}</span>
-    <span>{{ book.publisher }}</span>
-    <span>{{ book.publication_date }}</span>
-    <span>{{ book.rating }}</span>
-</body>
-</html>
+{% extends 'layout.html' %}
+
+{% block title%}Book Details{% endblock %}
+
+{% block main %}
+<h1>{{ book.name }}</h1>
+<span>저자: {{ book.author }}</span>
+<span>출판사: {{ book.publisher }}</span>
+<span>출간일: {{ book.publication_date }}</span>
+<span>평점: {{ book.rating }}</span>
+<span>설명: {{ book.pages }}</span>
+<span>페이지수: {{ book.rating }}</span>
+<span>ISBN: {{ book.isbn }}</span>
+<span>웹페이지 링크: {{ book.link }}</span>
+<span>대여 가능 권수: {{ book.available }}</span>
+
+<!-- comment -->
+<form action="{{ url_for('book.book_detail', book_id=book.id) }}" method="POST">
+    <input type="text" name="comment">
+    <input type="number" name="rating">
+    <input type="submit" value="리뷰 남기기">
+</form>
+
+{% for comment in comments %}
+<div class="post-comments" style="
+                            border: 1px solid navy;
+                            margin-bottom: 20px;
+                            padding: 10px 20px;
+                            position: relative;
+                            color: black;
+                            -webkit-border-radius: 4px;
+                            -moz-border-radius: 4px;
+                                -o-border-radius: 4px;
+                                    border-radius: 4px;
+                            position: relative;
+                        ">
+    <p class="meta">{{ comment.created_at }} 
+        <a href="#">{{ comment.user.username }}</a>
+        says : 
+        <span>{{ comment.rating }}</span>
+    </p>
+    <p>
+        {{ comment.content }}
+    </p>
+</div>    
+{% endfor %}
+{% endblock %}

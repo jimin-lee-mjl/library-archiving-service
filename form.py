@@ -6,6 +6,20 @@ from email_validator import validate_email, EmailNotValidError
 from error_msg import AUTH_ERROR
 
 
+def username_checker(form, field):
+    username = field.data
+    min_length = 3
+    digit = re.compile('[0-9]+')
+    special = re.compile('\W+')
+    is_digit = digit.search(username)
+    is_special = special.search(username)
+    if len(username) < min_length:
+        raise ValidationError(AUTH_ERROR['username_not_valid'])
+    if is_digit or is_special:
+        raise ValidationError(AUTH_ERROR['username_not_valid']) 
+    else:
+        pass
+
 def password_checker(form, field):
     password = field.data
     min_length = 10
@@ -15,11 +29,12 @@ def password_checker(form, field):
     special = re.compile('\W+')
     is_alphabet = alphabet.search(password)
     is_special = special.search(password)
-    if len(password) >= min_length:
-        if is_alphabet and is_special:
-            pass
-    else:
+    if len(password) < min_length:
         raise ValidationError(AUTH_ERROR['pw_not_vaild'])
+    elif not is_alphabet or not is_special:
+        raise ValidationError(AUTH_ERROR['pw_not_vaild'])
+    else:
+        pass
 
 
 def email_checker(form, field):
@@ -37,7 +52,7 @@ def email_checker(form, field):
 class RegisterForm(FlaskForm):
     username = StringField('Username', validators=[
         InputRequired(),
-        Length(min=3, max=15, message=AUTH_ERROR['username_not_valid'])
+        username_checker
     ])
     email = StringField('Email', validators=[
         InputRequired(),

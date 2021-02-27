@@ -24,3 +24,11 @@ def personal_rental():
         return redirect(url_for('.personal_rental'))
 
     return render_template('personal_rental.html', rentals=current_user.rentals)
+
+
+@bp.route('/archive/book', methods=['GET'])
+@login_required
+def book_archive():
+    current_user = g.user
+    books = Rental.query.filter_by(user_id_history = current_user.id).all()
+    return render_template('book_archive.html', books=books)

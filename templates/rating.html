@@ -1,0 +1,10 @@
+{% extends "bootstrap/base.html" %}
+
+{% macro star(rating) -%}
+{% for i in range(rating) %}
+    <span class="glyphicon glyphicon-star" style="color: #4CAF50;"></span>
+{% endfor %}
+{% for i in range(5 - rating) %}
+    <span class="glyphicon glyphicon-star-empty" style="color: #4CAF50;"></span>
+{% endfor %}
+{%- endmacro %}

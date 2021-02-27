@@ -16,7 +16,7 @@
         </div>
 
         <ul class="list-unstyled components">
-            <p>Dummy Heading</p>
+            <p>Have a lovely day</p>
             <li class="active">
                 <a href="{{ url_for('dashboard') }}">Dashboard</a>
             </li>
@@ -30,7 +30,7 @@
                 <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Archives</a>
                 <ul class="collapse list-unstyled" id="pageSubmenu">
                     <li>
-                        <a href="{{ url_for('personal.personal_rental') }}">Book Archive</a>
+                        <a href="{{ url_for('personal.book_archive') }}">Book Archive</a>
                     </li>
                     <li>
                         <a href="#">Movie Archive</a>
@@ -38,7 +38,7 @@
                 </ul>
             </li>
             <li>
-                <a href="#">Profile</a>
+                <a href="{{ url_for('personal.personal_rental') }}">Current Rentals</a>
             </li>
             <li>
                 <a href="#">Feedback</a>

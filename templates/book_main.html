@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% import 'rating.html' as star %}
 
 {% block title%}Elice Library{% endblock %}
 
@@ -12,12 +13,12 @@
                     <a href="{{ url_for('book.book_detail', book_id=book.id) }}">
                         <h3>{{ book.name }}</h3>
                     </a>
-                    <p>{{ book.rating }}</p>
-                    <p>{{ book.available }}</p>
+                    <p>{{ star.star(book.rating) }}</p>
+                    <p>{{ book.available }}권 남음</p>
                     <p>
                         <form action="{{ url_for('book.book_main') }}" method="POST">
                             <input type="hidden" name="book_id" value="{{ book.id }}">
-                            <input type="submit" value="대여하기" class="btn btn-primary" role="button">
+                            <input type="submit" value="대여하기" class="btn btn-primary custom-btn" role="button">
                         </form>
                         <a href="#" class="btn btn-default" role="button">리뷰쓰기</a>
                     </p>

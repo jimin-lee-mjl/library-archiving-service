@@ -130,11 +130,14 @@ a.article {
     color: #fff !important;
 }
 
-.custom-btn,
-.custom-btn:hover {
+.custom-btn {
     background: #4CAF50 !important;
     color: #fff !important;
     border: none;
+}
+
+.custom-btn:hover {
+    background: #76b852 !important;
 }
 
 a.article:hover {

@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% import 'rating.html' as star %}
 
 {% block styles %}
 {{super()}}
@@ -41,13 +42,24 @@
                     <form class="form-inline" action="{{ url_for('book.book_detail', book_id=book.id) }}" method="POST">
                         <textarea class="pb-cmnt-textarea" name="comment" required></textarea>
                         <div class="btn-group">
-                            <input type="number" name="rating" required>
-                            <!-- <button class="btn" type="button"><span class="fa fa-picture-o fa-lg"></span></button>
-                            <button class="btn" type="button"><span class="fa fa-video-camera fa-lg"></span></button>
-                            <button class="btn" type="button"><span class="fa fa-microphone fa-lg"></span></button>
-                            <button class="btn" type="button"><span class="fa fa-music fa-lg"></span></button> -->
+                            <input type="hidden" name="rating" id="rating">
+                            <span data-rating="1" 
+                                  class="glyphicon glyphicon-star-empty comment-star" 
+                                  style="color: #4CAF50;"></span>
+                            <span data-rating="2" 
+                                  class="glyphicon glyphicon-star-empty comment-star" 
+                                  style="color: #4CAF50;"></span>
+                            <span data-rating="3" 
+                                  class="glyphicon glyphicon-star-empty comment-star" 
+                                  style="color: #4CAF50;"></span>
+                            <span data-rating="4" 
+                                  class="glyphicon glyphicon-star-empty comment-star" 
+                                  style="color: #4CAF50;"></span>
+                            <span data-rating="5" 
+                                  class="glyphicon glyphicon-star-empty comment-star" 
+                                  style="color: #4CAF50;"></span>
                         </div>
-                        <input class="btn btn-primary pull-right custom-btn" type="submit" value="한줄평 남기기">
+                        <input class="btn btn-primary pull-right custom-btn" type="submit" value="감상 남기기">
                     </form>
                 </div>
             </div>
@@ -58,15 +70,19 @@
 {% for comment in comments %}
 <article class="row comment-wrapper">
     <div class="col-md-10 col-sm-10">
-        <div class="panel panel-default arrow left">
+        <div class="panel panel-default arrow left comments-panel">
             <div class="panel-body">
-                <header class="text-left">
-                    <div class="comment-user"><i class="fa fa-user"></i>{{ comment.user.username }}</div>
-                    <time class="comment-date" datetime="16-12-2014 01:05">
-                        <i class="fa fa-clock-o"></i>{{ comment.created_at }}
-                    </time>
-                    <span>{{ comment.rating }}</span>
-                </header>
+                <div class="header-wrapper">
+                    <header class="text-left">
+                        <span class="comment-user">
+                            <span class="comment-username">{{ comment.user.username }}</span>님의 감상
+                        </span>
+                        <time class="comment-date" datetime="16-12-2014 01:05">
+                            {{ comment.created_at }}
+                        </time>
+                    </header>
+                    <p>{{ star.star(comment.rating) }}</p>
+                </div>
                 <div class="comment-post">
                     <p>
                         {{ comment.content }}
@@ -77,4 +93,9 @@
     </div>
 </article>
 {% endfor %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{{url_for('static', filename='book_detail.js')}}"></script>
+{{super()}}
 {% endblock %}

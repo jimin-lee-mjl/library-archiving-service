@@ -46,7 +46,7 @@ def register():
         exist_user = User.query.filter_by(email=email).first()
 
         if exist_user:
-            flash(AUTH_ERROR['exist_email'])
+            flash(AUTH_ERROR['exist_email'], 'auth_error')
         else:
             hashed_pw = generate_password_hash(password, method="sha256")
             new_user = User(
@@ -71,9 +71,9 @@ def login():
         exist_user = User.query.filter_by(email=email).first()
 
         if not exist_user:
-            flash(AUTH_ERROR['no_user'])
+            flash(AUTH_ERROR['no_user'], 'auth_error')
         elif not check_password_hash(exist_user.password, password):
-            flash(AUTH_ERROR['wrong_pw'])
+            flash(AUTH_ERROR['wrong_pw'], 'auth_error')
         else:
             session['user_id'] = exist_user.id
             return redirect(url_for('dashboard'))

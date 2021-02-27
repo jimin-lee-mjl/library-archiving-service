@@ -21,6 +21,27 @@ p {
     font-weight: 500;
 }
 
-/* .panel.panel-info {
-    background-color: #76b852;
-} */
+.panel.panel-info, 
+.comments-panel {
+    border-color: #76b852;
+}
+
+.comment-username {
+    color: #4CAF50;
+    font-size: 18px;
+}
+
+.comment-user {
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.comment-date,
+.comment-user {
+    color: grey;
+}
+
+.header-wrapper {
+    display: flex;
+    justify-content: space-between;
+}

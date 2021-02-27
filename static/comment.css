@@ -15,6 +15,10 @@
   border: 1px solid #F2F2F2;
 }
 
+.pb-cmnt-textarea:focus {
+  outline: 1px solid #4CAF50;
+}
+
 .comment_field-wrapper {
   display: flex;
   justify-content: center;

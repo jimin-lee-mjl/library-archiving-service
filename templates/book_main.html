@@ -1,30 +1,25 @@
 {% extends 'layout.html' %}
-{% import 'rating.html' as star %}
+{% import 'components/pages.html' as pages %}
+{% import 'components/card.html' as card %}
 
+{% block styles %}
+{{super()}}
+<link rel="stylesheet"
+      href="{{url_for('static', filename='book_main.css')}}">
+{% endblock %}
 {% block title%}Elice Library{% endblock %}
 
 {% block main %}
-{% for book in book_list %}
-    <div class="row">
-        <div class="col-sm-6 col-md-4">
-            <div class="thumbnail">
-                <img src="../{{ book.image }}" alt="{{ book.name }}">
-                <div class="caption">
-                    <a href="{{ url_for('book.book_detail', book_id=book.id) }}">
-                        <h3>{{ book.name }}</h3>
-                    </a>
-                    <p>{{ star.star(book.rating) }}</p>
-                    <p>{{ book.available }}권 남음</p>
-                    <p>
-                        <form action="{{ url_for('book.book_main') }}" method="POST">
-                            <input type="hidden" name="book_id" value="{{ book.id }}">
-                            <input type="submit" value="대여하기" class="btn btn-primary custom-btn" role="button">
-                        </form>
-                        <a href="#" class="btn btn-default" role="button">리뷰쓰기</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="row card-wrapper">
+{% for book in book_list.items %}
+    {{ card.card(book=book, 
+                 endpoint=url_for('book.book_main'), 
+                 id=book.id,  
+                 value="대여하기", 
+                 extra='{}권 남음'.format(book.available),
+                 btn=True) }}
 {% endfor %}
+</div>
+
+{{ pages.pagination(book_list) }}
 {% endblock %}

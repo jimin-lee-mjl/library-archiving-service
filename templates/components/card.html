@@ -1,0 +1,22 @@
+{% extends 'bootstrap/base.html' %}
+{% import 'components/rating.html' as star %}
+{% import 'components/button.html' as button %}
+
+{% macro card(book, endpoint='', id='', value='', extra='', img='', btn=False) -%}
+<div class="col-sm-6 col-md-4 card">
+    <div class="thumbnail">
+        <img src="{{ img }}../{{ book.image }}" alt="{{ book.name }}">
+        <div class="caption">
+            <a href="{{ url_for('book.book_detail', book_id=book.id) }}">
+                <h3>{{ book.name }}</h3>
+            </a>
+            <p>{{ star.star(book.rating) }}</p>
+            <p>{{ extra }}</p>
+            {% if btn %}
+                <p>{{ button.button(endpoint=endpoint, id=id,  value=value) }}</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{%- endmacro -%}
+

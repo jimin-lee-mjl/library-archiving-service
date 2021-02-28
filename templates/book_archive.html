@@ -1,12 +1,15 @@
 {% extends 'layout.html' %}
-{% import 'rating.html' as star %}
+{% import 'components/card.html' as card %}
 
 {% block title%}Book Archive{% endblock %}
 
 {% block main %}
 {% for _book in books %}
     {% with book=_book.book_detail %}
-        <div class="row">
+        {{ card.card(book=book, 
+                    extra='{} ~ {}'.format(_book.rental_date, _book.return_date),
+                    img='../') }}
+        {# <div class="row">
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
                     <img src="../../{{ book.image }}" alt="{{ book.name }}">
@@ -21,7 +24,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> #}
     {% endwith %}
 {% endfor %}
 {% endblock %}

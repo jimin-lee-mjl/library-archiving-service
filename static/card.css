@@ -1,0 +1,13 @@
+.caption {
+    text-align: center;
+}
+
+.card-wrapper {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.card {
+    margin-right: 70px;
+}

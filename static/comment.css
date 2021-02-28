@@ -22,6 +22,7 @@
 .comment_field-wrapper {
   display: flex;
   justify-content: center;
+  width: 100%;
 }
 
 /*Comment List styles*/

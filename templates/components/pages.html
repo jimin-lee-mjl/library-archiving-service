@@ -1,0 +1,17 @@
+{% extends "bootstrap/base.html" %}
+
+{% macro pagination(threads) -%}
+<nav class="navigation">
+    <ul class="pagination">
+        {% for page in threads.iter_pages() %}
+            {% if page %}    
+                <li class="page-item">
+                    <a class="page-link custom-btn" href="{{ url_for('book.book_main', page_num=page) }}">{{ page }}</a>
+                </li>
+            {% else %}
+                <span>...</span>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</nav>
+{%- endmacro %}

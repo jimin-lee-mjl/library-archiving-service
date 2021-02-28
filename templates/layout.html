@@ -4,6 +4,8 @@
 {{super()}}
 <link rel="stylesheet"
       href="{{url_for('static', filename='sidebar.css')}}">
+<link rel="stylesheet"
+      href="{{url_for('static', filename='card.css')}}">
 {% endblock %}
 {% block title %}{% endblock %}
 
@@ -17,30 +19,30 @@
 
         <ul class="list-unstyled components">
             <p>Have a lovely day</p>
-            <li class="active">
+            <li id='dashboard'>
                 <a href="{{ url_for('dashboard') }}">Dashboard</a>
             </li>
-            <li>
+            <li id='library'>
                 <a href="{{ url_for('book.book_main') }}">Elice Library</a>
             </li>
-            <li>
+            <li id='search_movie'>
                 <a href="#">Search Movie</a>
             </li>
             <li>
                 <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Archives</a>
                 <ul class="collapse list-unstyled" id="pageSubmenu">
-                    <li>
+                    <li id='book_archive'>
                         <a href="{{ url_for('personal.book_archive') }}">Book Archive</a>
                     </li>
-                    <li>
+                    <li id='movie_archive'>
                         <a href="#">Movie Archive</a>
                     </li>
                 </ul>
             </li>
-            <li>
+            <li id='current_rental'>
                 <a href="{{ url_for('personal.personal_rental') }}">Current Rentals</a>
             </li>
-            <li>
+            <li id='feedback'>
                 <a href="#">Feedback</a>
             </li>
         </ul>
@@ -57,4 +59,10 @@
         {% block main %}{% endblock %}
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="{{url_for('static', filename='sidebar.js')}}"></script>
+{{super()}}
 {% endblock %}

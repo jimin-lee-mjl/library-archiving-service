@@ -11,3 +11,8 @@ AUTH_ERROR = {
 RENTAL_ERROR = {
     'no_stock': '재고가 없습니다.'
 }
+
+COMMENT_ERROR = {
+    'content_required': '한 글자 이상 감상을 적어야 합니다. ',
+    'star_required': '별점을 매겨주세요.'
+} 

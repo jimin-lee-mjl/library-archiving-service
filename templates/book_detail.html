@@ -1,47 +1,103 @@
 {% extends 'layout.html' %}
+{% import 'components/rating.html' as star %}
 
+{% block styles %}
+{{super()}}
+<link rel="stylesheet"
+      href="{{url_for('static', filename='book_detail.css')}}">
+<link rel="stylesheet"
+      href="{{url_for('static', filename='comment.css')}}">
+{% endblock %}
 {% block title%}Book Details{% endblock %}
 
 {% block main %}
-<h1>{{ book.name }}</h1>
-<span>저자: {{ book.author }}</span>
-<span>출판사: {{ book.publisher }}</span>
-<span>출간일: {{ book.publication_date }}</span>
-<span>평점: {{ book.rating }}</span>
-<span>설명: {{ book.pages }}</span>
-<span>페이지수: {{ book.rating }}</span>
-<span>ISBN: {{ book.isbn }}</span>
-<span>웹페이지 링크: {{ book.link }}</span>
-<span>대여 가능 권수: {{ book.available }}</span>
+<div class="page-header">
+    <h1>{{ book.name }}
+        <p><small>{{ book.author }}</small></p>
+    </h1>
+</div>
+<div class="book-wrapper">
+    <div class="img-wrapper" style="background-image: url('../../{{ book.image }}');"></div>
+    <div class="book_detail-wrapper">
+        <p>{{ book.publisher }}</p>
+        <p>{{ book.publication_date }} 출간</p>
+        <p>평점 {{ book.rating }}점</p>
+        <p>총 {{ book.pages }}쪽</p>
+        <p>ISBN {{ book.isbn }}</p>
+        <p>현재 {{ book.available }}권 남음</p>
+        <a href="{{ book.link }}">
+            <button type="button" class="btn btn-link custom-link"><p>웹 페이지 바로가기</p></button>
+        </a>
+    </div>
+</div>
+<p>{{ book.description }}</p>
+<hr />
 
 <!-- comment -->
-<form action="{{ url_for('book.book_detail', book_id=book.id) }}" method="POST">
-    <input type="text" name="comment">
-    <input type="number" name="rating">
-    <input type="submit" value="리뷰 남기기">
-</form>
-
+<div class="comment_field-wrapper">
+    <div class="container pb-cmnt-container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-info">
+                    <div class="panel-body">
+                        <form class="form-inline" action="{{ url_for('book.book_detail', book_id=book.id) }}" method="POST">
+                            <textarea class="pb-cmnt-textarea" name="comment" required></textarea>
+                            <div class="btn-group">
+                                <input type="hidden" name="rating" id="rating">
+                                <span data-rating="1" 
+                                      class="glyphicon glyphicon-star-empty comment-star" 
+                                      style="color: #4CAF50;"></span>
+                                <span data-rating="2" 
+                                      class="glyphicon glyphicon-star-empty comment-star" 
+                                      style="color: #4CAF50;"></span>
+                                <span data-rating="3" 
+                                      class="glyphicon glyphicon-star-empty comment-star" 
+                                      style="color: #4CAF50;"></span>
+                                <span data-rating="4" 
+                                      class="glyphicon glyphicon-star-empty comment-star" 
+                                      style="color: #4CAF50;"></span>
+                                <span data-rating="5" 
+                                      class="glyphicon glyphicon-star-empty comment-star" 
+                                      style="color: #4CAF50;"></span>
+                            </div>
+                            <input class="btn btn-primary pull-right custom-btn" type="submit" value="감상 남기기">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
 {% for comment in comments %}
-<div class="post-comments" style="
-                            border: 1px solid navy;
-                            margin-bottom: 20px;
-                            padding: 10px 20px;
-                            position: relative;
-                            color: black;
-                            -webkit-border-radius: 4px;
-                            -moz-border-radius: 4px;
-                                -o-border-radius: 4px;
-                                    border-radius: 4px;
-                            position: relative;
-                        ">
-    <p class="meta">{{ comment.created_at }} 
-        <a href="#">{{ comment.user.username }}</a>
-        says : 
-        <span>{{ comment.rating }}</span>
-    </p>
-    <p>
-        {{ comment.content }}
-    </p>
-</div>    
+<article class="row comment-wrapper">
+    <div class="col-md-10 col-sm-10">
+        <div class="panel panel-default arrow left comments-panel">
+            <div class="panel-body">
+                <div class="header-wrapper">
+                    <header class="text-left">
+                        <span class="comment-user">
+                            <span class="comment-username">{{ comment.user.username }}</span>님의 감상
+                        </span>
+                        <time class="comment-date" datetime="16-12-2014 01:05">
+                            {{ comment.created_at }}
+                        </time>
+                    </header>
+                    <p>{{ star.star(comment.rating) }}</p>
+                </div>
+                <div class="comment-post">
+                    <p>
+                        {{ comment.content }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
 {% endfor %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{{url_for('static', filename='book_detail.js')}}"></script>
+{{super()}}
 {% endblock %}

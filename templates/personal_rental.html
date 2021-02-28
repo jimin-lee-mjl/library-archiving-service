@@ -1,14 +1,17 @@
 {% extends 'layout.html' %}
+{% import 'components/card.html' as card %}
 
 {% block title%}Book Archive{% endblock %}
 
 {% block main %}
-{% for book in rentals %}
-    <span>{{ book.book_detail.name }}</span>
-    <span>{{ book.rental_date }}</span>
-    <form action="{{ url_for('personal.personal_rental') }}" method="POST">
-        <input type="hidden" name="book_id" value="{{ book.book_id }}">
-        <input type="submit" value="반납하기">
-    </form>
+{% for _book in rentals %}
+    {% with book=_book.book_detail %}
+        {{ card.card(book=book, 
+                     endpoint=url_for('personal.personal_rental'), 
+                     id=book.id, 
+                     value="반납하기", 
+                     extra='{} 대여'.format(_book.rental_date),
+                     btn=True) }}
+    {% endwith %}
 {% endfor %}
 {% endblock %}

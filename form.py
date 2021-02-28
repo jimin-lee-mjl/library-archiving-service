@@ -2,35 +2,75 @@ import re
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField
 from wtforms.validators import InputRequired, Length, EqualTo, ValidationError
+from email_validator import validate_email, EmailNotValidError
+from error_msg import AUTH_ERROR
 
 
-def passwordChecker(form, field):
+def username_checker(form, field):
+    username = field.data
+    min_length = 3
+    digit = re.compile('[0-9]+')
+    special = re.compile('\W+')
+    is_digit = digit.search(username)
+    is_special = special.search(username)
+    if len(username) < min_length:
+        raise ValidationError(AUTH_ERROR['username_not_valid'])
+    if is_digit or is_special:
+        raise ValidationError(AUTH_ERROR['username_not_valid']) 
+    else:
+        pass
+
+def password_checker(form, field):
     password = field.data
     min_length = 10
     alphabet = re.compile(
-      '[a-zA-Z]+'
+      '[a-zA-Z0-9]+'
       )
     special = re.compile('\W+')
-    match_alphabet = alphabet.search(password)
-    match_special = special.search(password)
-    if len(password) >= min_length:
-        if match_alphabet and match_special:
-            pass
+    is_alphabet = alphabet.search(password)
+    is_special = special.search(password)
+    if len(password) < min_length:
+        raise ValidationError(AUTH_ERROR['pw_not_vaild'])
+    elif not is_alphabet or not is_special:
+        raise ValidationError(AUTH_ERROR['pw_not_vaild'])
     else:
-        raise ValidationError('비밀번호는 말파벳 소문자와 대문자, 특수문자 중 두 가지를 포함해 10글자 이상이어야 합니다.')
+        pass
+
+
+def email_checker(form, field):
+    email = field.data
+    try:
+        valid = validate_email(email)
+        # Update with the normalized form.
+        email = valid.email
+    except EmailNotValidError as e:
+        # email is not valid, exception message is human-readable
+        print(str(e))
+        raise ValidationError(AUTH_ERROR['email_not_vaild'])
 
 
 class RegisterForm(FlaskForm):
     username = StringField('Username', validators=[
         InputRequired(),
-        Length(min=3, max=15, message='3글자 이상 15글자 이하로 작성해주세요.')
+        username_checker
     ])
-    email = String('Email', validators=[
+    email = StringField('Email', validators=[
         InputRequired(),
-        Length(min=6, max=35, message='6글자 이상 35글자 이하로 작성해주세요.')
+        email_checker
+    ])
+    password = PasswordField('Password', validators=[
+        InputRequired(),
+        password_checker
+    ])
+    repeat_pw = PasswordField('Confirm Password', validators=[
+        EqualTo('password', message=AUTH_ERROR['pw_not_match'])
+    ])
+
+
+class LoginForm(FlaskForm):
+    email = StringField('Email', validators=[
+        InputRequired()
     ])
     password = PasswordField('Password', [
-        InputRequired(),
-        EqualTo('repeat_pw', message='비밀번호가 일치하지 않습니다.')
+        InputRequired()
     ])
-    repeat_pw = PasswordField('Confirm Password')

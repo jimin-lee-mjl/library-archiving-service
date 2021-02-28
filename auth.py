@@ -12,6 +12,7 @@ from flask import (
 from werkzeug.security import check_password_hash, generate_password_hash
 from functools import wraps
 from db import db, User
+from form import RegisterForm, LoginForm
 from error_msg import AUTH_ERROR
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
@@ -36,17 +37,16 @@ def login_required(f):
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        email = request.form['email']
-        password = request.form['password']
-        repeat_pw = request.form['repeat_pw']
+    form = RegisterForm()
+    # vaildate_on_sumit() : form.is_submitted + form.vaild - only when the form is submitted
+    if form.validate_on_submit():
+        username = form.username.data
+        email = form.email.data
+        password = form.password.data
         exist_user = User.query.filter_by(email=email).first()
 
-        if not password == repeat_pw:
-            flash(AUTH_ERROR['pw_not_match'])
-        elif exist_user:
-            flash(AUTH_ERROR['exist_email'])
+        if exist_user:
+            flash(AUTH_ERROR['exist_email'], 'auth_error')
         else:
             hashed_pw = generate_password_hash(password, method="sha256")
             new_user = User(
@@ -58,30 +58,31 @@ def register():
             db.session.commit()
             return redirect(url_for('.login'))
 
-    return render_template('auth/register.html')
+    return render_template('auth/register.html', form=form)
 
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
+    form = LoginForm()
+    if form.validate_on_submit():
         session.pop('user_id', None)
-        email = request.form['email']
-        password = request.form['password']
+        email = form.email.data
+        password = form.password.data
         exist_user = User.query.filter_by(email=email).first()
 
         if not exist_user:
-            flash(AUTH_ERROR['no_user'])
+            flash(AUTH_ERROR['no_user'], 'auth_error')
         elif not check_password_hash(exist_user.password, password):
-            flash(AUTH_ERROR['wrong_pw'])
+            flash(AUTH_ERROR['wrong_pw'], 'auth_error')
         else:
             session['user_id'] = exist_user.id
             return redirect(url_for('dashboard'))
 
-    return render_template('auth/login.html')
+    return render_template('auth/login.html', form=form)
 
 
 @bp.route('/logout')
 @login_required
 def logout():
-    session.pop('user_id', None)
+    session.clear()
     return render_template('auth/login_required.html')

@@ -1,23 +1,38 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>회원가입</title>
-</head>
-<body>
-    <form action="{{ url_for('auth.register') }}" method='POST'>
-        <label>이름</label>
-        <input type="text" name="username" required>
-        <label>이메일</label>
-        <input type="email" name="email" required>
-        <label>비밀번호</label>
-        <input type="password" name="password" required>
-        <label>비밀번호 확인</label>
-        <input type="password" name="repeat_pw" required>
-        <input type="submit" value="가입하기">
-    </form>
-    <a href="{{ url_for('auth.login') }}"><button>로그인</button></a>
-</body>
-</html>
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet"
+      href="{{url_for('static', filename='login.css')}}">
+{% endblock %}
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="login-page">
+    <div class="form">
+        <form class="login-form" action="{{ url_for('auth.register') }}" method='POST'>
+            {{ form.hidden_tag() }}
+            {{ wtf.form_field(form.username) }}
+            {{ wtf.form_field(form.email) }}
+            {{ wtf.form_field(form.password) }}
+            {{ wtf.form_field(form.repeat_pw) }}
+            <button class="submit">join now</button>
+        </form>
+        <p class="message">Already registered? <a href="{{ url_for('auth.login') }}">Go to sign in</a></p>
+        {% with errors = get_flashed_messages(category_filter=["auth_error"]) %}
+            {% if errors %}
+                {%- for msg in errors %}
+                    <div class="alert alert-success alert-dismissible auth-error" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ msg }} 
+                    </div>
+                {% endfor -%}
+            {% endif %}
+        {% endwith %}
+    </div>
+</div>
+{% endblock %}
+

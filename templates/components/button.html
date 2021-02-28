@@ -1,0 +1,8 @@
+{% extends "bootstrap/base.html" %}
+
+{% macro button(endpoint, id, value) -%}
+<form action="{{ endpoint }}" method="POST">
+    <input type="hidden" name="book_id" value="{{ id }}">
+    <input type="submit" value="{{ value }}" class="btn btn-primary custom-btn" role="button">
+</form>
+{%- endmacro %}

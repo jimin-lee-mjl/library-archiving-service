@@ -1,0 +1,47 @@
+.book-wrapper {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.img-wrapper {
+    width: 400px;
+    height: 400px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.book_detail-wrapper {
+    text-align: center;
+    font-size: 17px;
+}
+
+p {
+    font-weight: 500;
+}
+
+.panel.panel-info, 
+.comments-panel {
+    border-color: #76b852;
+}
+
+.comment-username {
+    color: #4CAF50;
+    font-size: 18px;
+}
+
+.comment-user {
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.comment-date,
+.comment-user {
+    color: grey;
+}
+
+.header-wrapper {
+    display: flex;
+    justify-content: space-between;
+}

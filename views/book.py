@@ -9,7 +9,7 @@ from flask import (
 )
 from db import Book, Rental, Comment, db
 from auth import login_required
-from error_msg import RENTAL_ERROR
+from error_msg import RENTAL_ERROR, COMMENT_ERROR
 
 bp = Blueprint('book', __name__, url_prefix='/book')
 
@@ -26,8 +26,9 @@ def calculate_rating(comments):
 
 
 @bp.route('/', methods=['GET', 'POST'])
+@bp.route('/<int:page_num>', methods=['GET', 'POST'])
 @login_required
-def book_main():
+def book_main(page_num=1):
     if request.method == 'POST':
         current_user = g.user
         book_id = request.form['book_id']
@@ -46,11 +47,11 @@ def book_main():
         db.session.commit()
         return redirect(url_for('personal.personal_rental'))
 
-    books = Book.query.all()
+    books = Book.query.paginate(per_page=8, page=page_num, error_out=False)
     return render_template('book_main.html', book_list=books)
 
 
-@bp.route('/<book_id>', methods=['GET', 'POST'])
+@bp.route('/detail/<int:book_id>', methods=['GET', 'POST'])
 @login_required
 def book_detail(book_id):
     book = Book.query.filter_by(id=book_id).first()
@@ -59,16 +60,21 @@ def book_detail(book_id):
     if request.method == 'POST':
         content = request.form['comment']
         rating = request.form['rating']
-        current_user = g.user
+        if not content:
+            flash(COMMENT_ERROR['content_required'], 'comment_error')
+        elif not rating:
+            flash(COMMENT_ERROR['star_required'], 'comment_error')
+        else:
+            current_user = g.user
 
-        comment = Comment(
-            content=content,
-            rating=rating,
-            user_id=current_user.id
-        )
-        comments.append(comment)
-        book.rating = calculate_rating(comments)
-        db.session.commit()
+            comment = Comment(
+                content=content,
+                rating=rating,
+                user_id=current_user.id
+            )
+            comments.append(comment)
+            book.rating = calculate_rating(comments)
+            db.session.commit()
         return redirect(url_for('.book_detail', book_id=book_id))
 
     comments.reverse()

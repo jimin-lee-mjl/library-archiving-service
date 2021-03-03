@@ -9,7 +9,7 @@ from flask import (
 )
 from db import Book, Rental, Comment, db
 from auth import login_required
-from error_msg import RENTAL_ERROR, COMMENT_ERROR
+from error_msg import RentalError, CommentError
 
 bp = Blueprint('book', __name__, url_prefix='/book')
 
@@ -25,27 +25,27 @@ def calculate_rating(comments):
     return total_rating
 
 
-@bp.route('/', methods=['GET', 'POST'])
-@bp.route('/<int:page_num>', methods=['GET', 'POST'])
+@bp.route('/', methods=['GET'])
+@bp.route('/<int:page_num>', methods=['GET'])
 @login_required
 def book_main(page_num=1):
-    if request.method == 'POST':
-        current_user = g.user
-        book_id = request.form['book_id']
-        target = Book.query.filter_by(id=book_id).first()
+    # if request.method == 'POST':
+    #     current_user = g.user
+    #     book_id = request.form['book_id']
+    #     target = Book.query.filter_by(id=book_id).first()
 
-        if target.available == 0:
-            flash(RENTAL_ERROR['no_stock'])
-            return redirect(url_for('.book_main'))
+    #     if target.available == 0:
+    #         flash(RentalError.stock.inavailable)
+    #         return redirect(url_for('book.book_main'))
 
-        rental_book = Rental(
-            book_id=book_id,
-            user_id_history=current_user.id
-        )
-        current_user.rentals.append(rental_book)
-        target.available -= 1
-        db.session.commit()
-        return redirect(url_for('personal.personal_rental'))
+    #     rental_book = Rental(
+    #         book_id=book_id,
+    #         user_id_history=current_user.id
+    #     )
+    #     current_user.rentals.append(rental_book)
+    #     target.available -= 1
+    #     db.session.commit()
+    #     return redirect(url_for('personal.personal_rental'))
 
     books = Book.query.paginate(per_page=8, page=page_num, error_out=False)
     return render_template('book_main.html', book_list=books)
@@ -61,9 +61,9 @@ def book_detail(book_id):
         content = request.form['comment']
         rating = request.form['rating']
         if not content:
-            flash(COMMENT_ERROR['content_required'], 'comment_error')
+            flash(CommentError.content.required, 'comment_error')
         elif not rating:
-            flash(COMMENT_ERROR['star_required'], 'comment_error')
+            flash(CommentError.star.required, 'comment_error')
         else:
             current_user = g.user
 
@@ -79,4 +79,21 @@ def book_detail(book_id):
 
     comments.reverse()
     return render_template('book_detail.html', book=book, comments=comments)
+
+
+@bp.route('/rental', methods=['POST'])
+def rental_book():
+    current_user = g.user
+    book_id = request.form['book_id']
+    target_book = Book.query.filter_by(id=book_id).first()
+
+    if target_book.is_available():
+        target_book.subtract_stock()
+        current_user.rental_book(target_book.id)
+    else:
+        return redirect(url_for('book.book_main'))
+
+    return redirect(url_for('personal.personal_rental'))
+
+    
 

@@ -13,7 +13,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from functools import wraps
 from db import db, User
 from form import RegisterForm, LoginForm
-from error_msg import AUTH_ERROR
+from error_msg import AuthError
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -46,7 +46,7 @@ def register():
         exist_user = User.query.filter_by(email=email).first()
 
         if exist_user:
-            flash(AUTH_ERROR['exist_email'], 'auth_error')
+            flash(AuthError.email.inavailable, 'auth_error')
         else:
             hashed_pw = generate_password_hash(password, method="sha256")
             new_user = User(
@@ -71,12 +71,12 @@ def login():
         exist_user = User.query.filter_by(email=email).first()
 
         if not exist_user:
-            flash(AUTH_ERROR['no_user'], 'auth_error')
+            flash(AuthError.email.no_match, 'auth_error')
         elif not check_password_hash(exist_user.password, password):
-            flash(AUTH_ERROR['wrong_pw'], 'auth_error')
+            flash(AuthError.password.inavailable, 'auth_error')
         else:
             session['user_id'] = exist_user.id
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('main.dashboard'))
 
     return render_template('auth/login.html', form=form)
 

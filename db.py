@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from datetime import datetime, timedelta
 from config import DB_URI
+from error_msg import RentalError
 
 current_app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
 current_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -17,6 +18,18 @@ class User(db.Model):
     password = db.Column(db.String(80), nullable=False, unique=True)
     rentals = db.relationship('Rental', backref='user')
     comment = db.relationship('Comment', backref='user')
+
+    def rental_book(self, book_id):
+        book = Rental(
+            book_id=book_id,
+            user_id_history=self.id
+        )
+        self.rentals.append(book)
+        db.session.commit()
+
+    def return_book(self, book):
+        self.rentals.remove(book)
+        db.session.commit()
 
 
 class Book(db.Model):
@@ -34,6 +47,27 @@ class Book(db.Model):
     available = db.Column(db.Integer, default=5)
     comment = db.relationship('Comment', backref='book')
 
+    def is_available(self):
+        if self.available > 0:
+            return True
+        else:
+            flash(RentalError.stock.inavailable)
+            return False
+
+    def add_stock(self):
+        self.available += 1
+
+    def subtract_stock(self):
+        self.available -= 1
+
+    def calculate_rating(self):
+        total = 0
+        for comment in self.comment:
+            rating = int(comment.rating)
+            total += rating
+        total_rating = round(total/len(self.comment))
+        self.rating = total_rating
+
 
 class Rental(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -43,6 +77,9 @@ class Rental(db.Model):
     return_date = db.Column(db.Date)
     user_id_history = db.Column(db.Integer)
     book_detail = db.relationship('Book')
+
+    def book_returned(self):
+        self.return_date = (datetime.now()+timedelta(hours=9)).date()
 
 
 class Comment(db.Model):

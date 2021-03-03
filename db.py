@@ -51,7 +51,7 @@ class Book(db.Model):
         if self.available > 0:
             return True
         else:
-            flash(RentalError.stock.inavailable)
+            flash(RentalError.stock.INAVAILABLE)
             return False
 
     def add_stock(self):

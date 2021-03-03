@@ -14,7 +14,7 @@ def username_checker(form, field):
     is_digit = digit.search(username)
     is_special = special.search(username)
     if len(username) < min_length or is_digit or is_special:
-        raise ValidationError(AuthError.username.invalid)
+        raise ValidationError(AuthError.username.INVALID)
     else:
         pass
 
@@ -28,7 +28,7 @@ def password_checker(form, field):
     is_alphabet = alphabet.search(password)
     is_special = special.search(password)
     if len(password) < min_length or not is_alphabet or not is_special:
-        raise ValidationError(AuthError.password.invalid)
+        raise ValidationError(AuthError.password.INVALID)
     else:
         pass
 
@@ -42,7 +42,7 @@ def email_checker(form, field):
     except EmailNotValidError as e:
         # email is not valid, exception message is human-readable
         print(str(e))
-        raise ValidationError(AuthError.email.invaild)
+        raise ValidationError(AuthError.email.INVALID)
 
 
 class RegisterForm(FlaskForm):
@@ -59,7 +59,7 @@ class RegisterForm(FlaskForm):
         password_checker
     ])
     repeat_pw = PasswordField('Confirm Password', validators=[
-        EqualTo('password', message=AuthError.password.no_match)
+        EqualTo('password', message=AuthError.password.NO_MATCH)
     ])
 
 

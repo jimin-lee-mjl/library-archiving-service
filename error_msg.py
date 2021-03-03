@@ -18,10 +18,10 @@ class AuthError(Enum):
         '비밀번호가 일치하지 않습니다.'
     )
 
-    def __init__(self, inavailable, invaild, no_match):
-        self.inavailable = inavailable
-        self.invalid = invaild
-        self.no_match = no_match
+    def __init__(self, INAVAILABLE, INVALID, NO_MATCH):
+        self.INAVAILABLE = INAVAILABLE
+        self.INVALID = INVALID
+        self.NO_MATCH = NO_MATCH
 
 
 class RentalError(Enum):
@@ -29,8 +29,8 @@ class RentalError(Enum):
         '재고가 없습니다.'
     )
 
-    def __init__(self, inavailable):
-        self.inavailable = inavailable
+    def __init__(self, INAVAILABLE):
+        self.INAVAILABLE = INAVAILABLE
 
 
 class CommentError(Enum):
@@ -41,5 +41,5 @@ class CommentError(Enum):
         '별점을 매겨주세요.'
     )
 
-    def __init__(self, required):
-        self.required = required
+    def __init__(self, REQUIRED):
+        self.REQUIRED = REQUIRED

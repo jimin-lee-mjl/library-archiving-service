@@ -21,6 +21,3 @@ def rental_history():
     current_user = g.user
     books = Rental.query.filter_by(user_id_history = current_user.id).all()
     return render_template('book_archive.html', books=books)
-
-
-

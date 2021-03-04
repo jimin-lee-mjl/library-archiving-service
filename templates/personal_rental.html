@@ -4,6 +4,7 @@
 {% block title%}Book Archive{% endblock %}
 
 {% block main %}
+<div class="row card-wrapper">
 {% for _book in rentals %}
     {% with book=_book.book_detail %}
         {{ card.card(book=book, 
@@ -14,4 +15,5 @@
                      btn=True) }}
     {% endwith %}
 {% endfor %}
+</div>
 {% endblock %}

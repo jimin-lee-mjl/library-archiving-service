@@ -11,7 +11,8 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 from functools import wraps
-from db import db, User
+from app import db
+from model import User
 from form import RegisterForm, LoginForm
 from error_msg import AuthError
 

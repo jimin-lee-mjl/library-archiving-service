@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, g, request, redirect, url_for
 from datetime import datetime, timedelta
+from app import db
+from model import Book, Rental
 from auth import login_required
-from db import Book, Rental, db
 from service import BookService
 
 bp = Blueprint('archive', __name__, url_prefix='/archive')

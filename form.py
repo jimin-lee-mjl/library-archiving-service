@@ -6,7 +6,7 @@ from email_validator import validate_email, EmailNotValidError
 from error_msg import AuthError
 
 
-def username_checker(form, field):
+def check_username(form, field):
     username = field.data
     min_length = 3
     digit = re.compile('[0-9]+')
@@ -18,7 +18,7 @@ def username_checker(form, field):
     else:
         pass
 
-def password_checker(form, field):
+def check_password(form, field):
     password = field.data
     min_length = 10
     alphabet = re.compile(
@@ -33,7 +33,7 @@ def password_checker(form, field):
         pass
 
 
-def email_checker(form, field):
+def check_email(form, field):
     email = field.data
     try:
         valid = validate_email(email)
@@ -48,15 +48,15 @@ def email_checker(form, field):
 class RegisterForm(FlaskForm):
     username = StringField('Username', validators=[
         InputRequired(),
-        username_checker
+        check_username
     ])
     email = StringField('Email', validators=[
         InputRequired(),
-        email_checker
+        check_email
     ])
     password = PasswordField('Password', validators=[
         InputRequired(),
-        password_checker
+        check_password
     ])
     repeat_pw = PasswordField('Confirm Password', validators=[
         EqualTo('password', message=AuthError.password.NO_MATCH)

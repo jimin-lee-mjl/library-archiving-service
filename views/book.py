@@ -7,7 +7,8 @@ from flask import (
     url_for,
     flash
 )
-from db import Book, Rental, Comment, db
+from app import db
+from model import Book, Rental, Comment
 from auth import login_required
 from error_msg import RentalError, CommentError, ServiceError
 from service import BookService, CommentService

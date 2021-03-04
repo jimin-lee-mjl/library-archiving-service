@@ -1,4 +1,5 @@
-from db import db, Book, Rental, User
+from app import db
+from model import Book, Rental, User
 from error_msg import ServiceError
 
 

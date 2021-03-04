@@ -1,13 +1,5 @@
-from flask import current_app
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 from datetime import datetime, timedelta
-from config import DB_URI
-
-current_app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
-current_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(current_app)
-migrate = Migrate(current_app, db) 
+from app import db
 
 
 class User(db.Model):
@@ -91,8 +83,3 @@ class Comment(db.Model):
     book_id = db.Column(db.Integer, db.ForeignKey(Book.id))
     user_id = db.Column(db.Integer, db.ForeignKey(User.id))
 
-
-def init_db():
-    # bind db and app
-    db.init_app(current_app)
-    db.create_all()

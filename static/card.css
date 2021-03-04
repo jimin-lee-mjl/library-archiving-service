@@ -2,12 +2,6 @@
     text-align: center;
 }
 
-/* .card-wrapper {
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-} */
-
 .card-wrapper {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

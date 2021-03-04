@@ -11,13 +11,11 @@ bp = Blueprint('archive', __name__, url_prefix='/archive')
 @bp.route('/current', methods=['GET', 'POST'])
 @login_required
 def rental_current():
-    current_user = g.user
-    return render_template('personal_rental.html', rentals=current_user.rentals)
+    return render_template('personal_rental.html', rentals=g.user.rentals)
 
 
 @bp.route('/history', methods=['GET'])
 @login_required
 def rental_history():
-    current_user = g.user
-    books = Rental.query.filter_by(user_id_history = current_user.id).all()
-    return render_template('book_archive.html', books=books)
+    books = Rental.query.filter_by(user_id_history = g.user.id).all()
+    return render_template('book_archive.html', books=books) # rental service 로 이전하기

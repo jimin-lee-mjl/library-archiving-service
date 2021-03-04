@@ -4,7 +4,7 @@
 <form action="{{ endpoint }}" method="POST">
     <input type="hidden" name="book_id" value="{{ id }}">
     {% if no_stock %}
-    <button type="button" class="btn btn-primary custom-btn disabled="disabled">{{ value }}</button>
+    <button type="button" class="btn btn-primary custom-btn" disabled="disabled">{{ value }}</button>
     {% else %}
     <input type="submit" value="{{ value }}" class="btn btn-primary custom-btn" role="button">
     {% endif %}

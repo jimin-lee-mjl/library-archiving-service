@@ -35,4 +35,8 @@ class CommentService():
         self.book.rating = self.book.calculate_rating()
         db.session.commit()
 
+    def show_comment(self):
+        self.book.comment.reverse()
+        return self.book.comment
+
             

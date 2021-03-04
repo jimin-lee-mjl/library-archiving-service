@@ -32,7 +32,7 @@
                 <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Archives</a>
                 <ul class="collapse list-unstyled" id="pageSubmenu">
                     <li id='book_archive'>
-                        <a href="{{ url_for('personal.book_archive') }}">Book Archive</a>
+                        <a href="{{ url_for('archive.rental_history') }}">Book Archive</a>
                     </li>
                     <li id='movie_archive'>
                         <a href="#">Movie Archive</a>
@@ -40,7 +40,7 @@
                 </ul>
             </li>
             <li id='current_rental'>
-                <a href="{{ url_for('personal.personal_rental') }}">Current Rentals</a>
+                <a href="{{ url_for('archive.rental_current') }}">Current Rentals</a>
             </li>
             <li id='feedback'>
                 <a href="#">Feedback</a>

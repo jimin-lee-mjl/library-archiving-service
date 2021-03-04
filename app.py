@@ -11,16 +11,16 @@ def create_app():
 
     # any extensions using app as current_app should be inside
     with app.app_context():
-        from db import init_db
         import auth
+        from db import init_db
         from views import book
-        from views import personal
+        from views import archive
         from views import main
         
         init_db()
         app.register_blueprint(auth.bp)
         app.register_blueprint(book.bp)
-        app.register_blueprint(personal.bp)
+        app.register_blueprint(archive.bp)
         app.register_blueprint(main.bp)
 
         # from library import create_library

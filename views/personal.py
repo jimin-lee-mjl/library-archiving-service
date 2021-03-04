@@ -10,19 +10,6 @@ bp = Blueprint('personal', __name__, url_prefix='/personal')
 @login_required
 def personal_rental():
     current_user = g.user
-    if request.method == 'POST':
-        book_id = request.form['book_id']
-        target = Book.query.filter_by(id=book_id).first()
-        rental_book = Rental.query.filter(
-            (Rental.book_id == book_id) & (Rental.user_id == current_user.id)
-        ).first()
-        print('user id:', rental_book.user_id, 'book_id:', book_id)
-        target.available += 1
-        rental_book.return_date = (datetime.now()+timedelta(hours=9)).date()
-        current_user.rentals.remove(rental_book)
-        db.session.commit()
-        return redirect(url_for('.personal_rental'))
-
     return render_template('personal_rental.html', rentals=current_user.rentals)
 
 
@@ -32,3 +19,17 @@ def book_archive():
     current_user = g.user
     books = Rental.query.filter_by(user_id_history = current_user.id).all()
     return render_template('book_archive.html', books=books)
+
+
+@bp.route('/return', methods=['POST'])
+def return_book():
+    current_user = g.user
+    book_id = request.form['book_id']
+    target_book = Rental.query.filter(
+        (Rental.book_id == book_id) & (Rental.user_id == current_user.id)
+    ).first()
+    current_user.return_book(target_book)
+    target_book.book_detail.return_book()
+    target_book.return_book()
+    db.session.commit()
+    return redirect(url_for('personal.personal_rental'))

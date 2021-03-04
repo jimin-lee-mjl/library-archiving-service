@@ -7,7 +7,7 @@
 {% for _book in rentals %}
     {% with book=_book.book_detail %}
         {{ card.card(book=book, 
-                     endpoint=url_for('personal.personal_rental'), 
+                     endpoint=url_for('personal.return_book'), 
                      id=book.id, 
                      value="반납하기", 
                      extra='{} 대여'.format(_book.rental_date),

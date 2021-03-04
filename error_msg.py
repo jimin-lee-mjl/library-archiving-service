@@ -43,3 +43,7 @@ class CommentError(Enum):
 
     def __init__(self, REQUIRED):
         self.REQUIRED = REQUIRED
+
+
+class ServiceError(Exception):
+    pass

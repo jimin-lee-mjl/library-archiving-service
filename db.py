@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from datetime import datetime, timedelta
 from config import DB_URI
-from error_msg import RentalError
 
 current_app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
 current_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -20,16 +19,22 @@ class User(db.Model):
     comment = db.relationship('Comment', backref='user')
 
     def rental_book(self, book_id):
-        book = Rental(
+        new_rental = Rental(
             book_id=book_id,
             user_id_history=self.id
         )
-        self.rentals.append(book)
-        db.session.commit()
+        self.rentals.append(new_rental)
 
     def return_book(self, book):
         self.rentals.remove(book)
-        db.session.commit()
+
+    def create_comment(self, content, rating, book_id):
+        new_comment = Comment(
+            content=content,
+            rating=rating,
+            book_id=book_id
+        )
+        self.comment.append(new_comment)
 
 
 class Book(db.Model):
@@ -48,17 +53,13 @@ class Book(db.Model):
     comment = db.relationship('Comment', backref='book')
 
     def is_available(self):
-        if self.available > 0:
-            return True
-        else:
-            flash(RentalError.stock.INAVAILABLE)
-            return False
+        return self.available > 0
 
-    def add_stock(self):
-        self.available += 1
-
-    def subtract_stock(self):
+    def rental_book(self):
         self.available -= 1
+
+    def return_book(self):
+        self.available += 1
 
     def calculate_rating(self):
         total = 0
@@ -66,7 +67,7 @@ class Book(db.Model):
             rating = int(comment.rating)
             total += rating
         total_rating = round(total/len(self.comment))
-        self.rating = total_rating
+        return total_rating
 
 
 class Rental(db.Model):
@@ -78,7 +79,7 @@ class Rental(db.Model):
     user_id_history = db.Column(db.Integer)
     book_detail = db.relationship('Book')
 
-    def book_returned(self):
+    def return_book(self):
         self.return_date = (datetime.now()+timedelta(hours=9)).date()
 
 

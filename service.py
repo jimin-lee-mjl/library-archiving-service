@@ -25,6 +25,11 @@ class BookService():
         target_book.return_book()
         db.session.commit()
 
+    def user_has_book(self):
+        exist_book = [book for book in self.user.rentals if book.book_id == self.book.id][0]
+        return exist_book
+
+
 
 class CommentService():
     def __init__(self, book_id, user_id):

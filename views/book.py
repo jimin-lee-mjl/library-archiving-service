@@ -21,7 +21,7 @@ bp = Blueprint('book', __name__, url_prefix='/book')
 @login_required
 def book_main(page_num=1):
     books = Book.query.paginate(per_page=8, page=page_num, error_out=False)
-    return render_template('book_main.html', book_list=books)
+    return render_template('book_main.html', book_list=books, )
 
 
 @bp.route('/detail/<int:book_id>', methods=['GET', 'POST'])

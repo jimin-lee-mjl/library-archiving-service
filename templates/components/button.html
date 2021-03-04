@@ -1,8 +1,12 @@
 {% extends "bootstrap/base.html" %}
 
-{% macro button(endpoint, id, value, disable=False) -%}
+{% macro button(endpoint, id, value, no_stock) -%}
 <form action="{{ endpoint }}" method="POST">
     <input type="hidden" name="book_id" value="{{ id }}">
+    {% if no_stock %}
+    <button type="button" class="btn btn-primary custom-btn disabled="disabled">{{ value }}</button>
+    {% else %}
     <input type="submit" value="{{ value }}" class="btn btn-primary custom-btn" role="button">
+    {% endif %}
 </form>
 {%- endmacro %}

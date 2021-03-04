@@ -1,37 +1,30 @@
-from flask import Flask, g, render_template, url_for, redirect
+from flask import Flask
 from flask_bootstrap import Bootstrap
 from config import SECRET_KEY
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = SECRET_KEY
-Bootstrap(app)
+
+def create_app():
+    app = Flask(__name__)
+    app.config['SECRET_KEY'] = SECRET_KEY
+    Bootstrap(app)
 
 
-@app.route('/')
-def dashboard():
-    if g.user:
-        return render_template('dash.html', username=g.user.username)
-    else:
-        return redirect(url_for('auth.login'))
+    # any extensions using app as current_app should be inside
+    with app.app_context():
+        from db import init_db
+        import auth
+        from views import book
+        from views import personal
+        from views import main
+        
+        init_db()
+        app.register_blueprint(auth.bp)
+        app.register_blueprint(book.bp)
+        app.register_blueprint(personal.bp)
+        app.register_blueprint(main.bp)
 
+        # from library import create_library
+        # create_library() 
+    
+    return app
 
-# any extensions using app as current_app should be inside
-with app.app_context():
-    from db import init_db
-    init_db()
-
-    import auth
-    app.register_blueprint(auth.bp)
-
-    from views import book
-    app.register_blueprint(book.bp)
-
-    from views import personal
-    app.register_blueprint(personal.bp)
-
-    # from library import create_library
-    # create_library() 
-
-
-if __name__ == '__main__':
-    app.run

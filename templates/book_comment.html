@@ -21,7 +21,7 @@
     <div class="book_detail-wrapper">
         <p>{{ book.publisher }}</p>
         <p>{{ book.publication_date }} 출간</p>
-        <p>평점 {{ book.rating }}점</p>
+        <p>{{ star.star(book.rating) }}</p>
         <p>총 {{ book.pages }}쪽</p>
         <p>ISBN {{ book.isbn }}</p>
         <a href="{{ book.link }}">
@@ -54,12 +54,12 @@
                         {{ comment.content }}
                     </p>
                 </div>
-                <p>
+                <div class="btns_wrapper">
                     <button class="btn btn-primary custom-btn" id="update_btn">수정하기</button>
                     <form action="{{ url_for('archive.delete_comment', book_id=book.id) }}" method="POST">
                         <input type="submit" class="btn btn-primary custom-btn" value="삭제하기">
                     </form>
-                </p>
+                </div>
             </div>
         </div>
     </div>
@@ -153,6 +153,6 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="{{url_for('static', filename='book_detail.js')}}"></script>
+<script src="{{url_for('static', filename='book_comment.js')}}"></script>
 {{super()}}
 {% endblock %}

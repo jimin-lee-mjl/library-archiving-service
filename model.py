@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 from app import db
 
 
@@ -9,6 +9,7 @@ class User(db.Model):
     password = db.Column(db.String(80), nullable=False, unique=True)
     rentals = db.relationship('Rental', backref='user')
     comment = db.relationship('Comment', backref='user')
+    marks = db.relationship('Mark', backref='user')
 
     def rental_book(self, book_id):
         new_rental = Rental(
@@ -27,6 +28,26 @@ class User(db.Model):
             book_id=book_id
         )
         self.comment.append(new_comment)
+
+    def create_mark(self, book_id):
+        marked_book = Mark(
+            book_id=book_id
+        )
+        self.marks.append(marked_book)
+
+    def check_mark(self, book_id):
+        try:
+            marked_book = [book for book in self.marks if book.book_id == book_id][0]
+            return True
+        except:
+            return False
+
+    def check_rental(self, book_id):
+        try:
+            rent_book = [book for book in self.rentals if book.book_id == book_id][0]
+            return True
+        except:
+            return False
 
 
 class Book(db.Model):
@@ -70,7 +91,7 @@ class Rental(db.Model):
     rental_date = db.Column(db.Date, default=datetime.now().date())
     return_date = db.Column(db.Date)
     user_id_history = db.Column(db.Integer)
-    book_detail = db.relationship('Book')
+    book_detail = db.relationship('Book', backref='rental')
 
     def return_book(self):
         self.return_date = datetime.now().date()
@@ -84,7 +105,14 @@ class Comment(db.Model):
     book_id = db.Column(db.Integer, db.ForeignKey(Book.id))
     user_id = db.Column(db.Integer, db.ForeignKey(User.id))
 
-    def update(self, content, rating):
+    def update(self, content, rating, update_date):
         self.content = content
         self.rating = rating
+        self.created_at = update_date
 
+
+class Mark(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    book_id = db.Column(db.Integer, db.ForeignKey(Book.id))
+    user_id = db.Column(db.Integer, db.ForeignKey(User.id))
+    book_detail = db.relationship('Book', backref='mark')

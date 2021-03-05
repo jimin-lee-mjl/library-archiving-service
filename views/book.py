@@ -11,7 +11,7 @@ from app import db
 from model import Book, Rental, Comment
 from auth import login_required
 from error_msg import RentalError, CommentError, ServiceError
-from service import book_service, comment_service
+from service import book_service, comment_service, mark_service
 
 bp = Blueprint('book', __name__, url_prefix='/book')
 
@@ -27,9 +27,10 @@ def book_main(page_num=1):
 @bp.route('/detail/<int:book_id>', methods=['GET', 'POST'])
 @login_required
 def book_detail(book_id):
-    book = Book.query.filter_by(id=book_id).first()
+    book = Book.query.filter_by(id=book_id).first() # 서비스 객체로 옮기기
     comments = comment_service.show_comments(book_id)
-    return render_template('book_detail.html', book=book, comments=comments)
+    marked = mark_service.check_mark(book_id, g.user.id)
+    return render_template('book_detail.html', book=book, comments=comments, marked=marked)
 
 
 @bp.route('/rental', methods=['POST'])
@@ -42,7 +43,7 @@ def rental_book():
         flash(RentalError.stock.INAVAILABLE, 'book_error')
         return redirect(url_for('book.book_main'))
 
-    return redirect(url_for('archive.rental_current'))
+    return redirect(url_for('main.dashboard'))
 
 
 @bp.route('/return', methods=['POST'])
@@ -50,4 +51,4 @@ def rental_book():
 def return_book():
     book_id = request.form['book_id']
     book_service.return_book(book_id, g.user.id)
-    return redirect(url_for('archive.rental_current'))
+    return redirect(url_for('main.dashboard'))

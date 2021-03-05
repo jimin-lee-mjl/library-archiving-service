@@ -7,7 +7,7 @@ bp = Blueprint('main', __name__)
 @bp.route('/')
 @login_required
 def dashboard():
-    if g.user:
-        return render_template('dash.html', username=g.user.username)
-    else:
-        return redirect(url_for('auth.login'))
+    rentals = g.user.rentals
+    return render_template('dashboard.html', rentals=rentals,
+                                             username=g.user.username,
+                                             length=len(rentals))

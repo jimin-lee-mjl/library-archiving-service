@@ -1,5 +1,6 @@
+from datetime import datetime
 from app import db
-from model import Book, Rental, User,Comment
+from model import Book, Rental, User, Comment, Mark
 from error_msg import ServiceError
 
 
@@ -37,11 +38,7 @@ class BookService():
 
     def user_has_book(self, book_id, user_id):
         user = self.get_user(user_id)
-        try:
-            rent_book = [book for book in user.rentals if book.book_id == book_id][0]
-            return True
-        except:
-            return False
+        return user.check_rental(book_id)
 
 
 class CommentService():
@@ -76,7 +73,8 @@ class CommentService():
         comment = Comment.query.filter(
             (Comment.book_id == book_id) & (Comment.user_id == user_id)
         ).first()
-        comment.update(content, rating)
+        updated_at = datetime.now().date()
+        comment.update(content, rating, updated_at)
         db.session.commit()
 
     def delete_comment(self, book_id, user_id):
@@ -92,5 +90,36 @@ class CommentService():
         db.session.commit()
 
 
+class MarkService():
+    def get_book(self, book_id):
+        book = Book.query.filter_by(id=book_id).first()
+        return book
+    
+    def get_user(self, user_id):
+        user = User.query.filter_by(id=user_id).first()
+        return user
+
+    def get_marks(self, user_id):
+        user = self.get_user(user_id)
+        return user.marks
+
+    def create_mark(self, book_id, user_id):
+        user = self.get_user(user_id)
+        user.create_mark(book_id)
+        db.session.commit()
+
+    def delete_mark(self, book_id, user_id):
+        book = Mark.query.filter(
+            (Mark.book_id == book_id) & (Mark.user_id == user_id)
+        ).first()
+        db.session.delete(book)
+        db.session.commit()
+
+    def check_mark(self, book_id, user_id):
+        user = self.get_user(user_id)
+        return user.check_mark(book_id)
+
+
 book_service = BookService()
 comment_service = CommentService()
+mark_service = MarkService()

@@ -1,5 +1,6 @@
 {% extends 'layout.html' %}
 {% import 'components/rating.html' as star %}
+{% import 'components/heart.html' as heart %}
 
 {% block styles %}
 {{super()}}
@@ -21,13 +22,14 @@
     <div class="book_detail-wrapper">
         <p>{{ book.publisher }}</p>
         <p>{{ book.publication_date }} 출간</p>
-        <p>평점 {{ book.rating }}점</p>
+        <p>{{ star.star(book.rating) }}</p>
         <p>총 {{ book.pages }}쪽</p>
         <p>ISBN {{ book.isbn }}</p>
         <p>현재 {{ book.available }}권 남음</p>
-        <a href="{{ book.link }}">
-            <button type="button" class="btn btn-link custom-link"><p>웹 페이지 바로가기</p></button>
-        </a>
+        <p><a href="{{ book.link }}">
+            <button type="button" class="btn btn-link custom-link web-link"><p>웹 페이지 바로가기</p></button>
+        </a></p>
+        <p>{{ heart.heart(marked=marked, book_id=book.id) }}</p>
     </div>
 </div>
 <p>{{ book.description }}</p>
@@ -63,6 +65,6 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="{{url_for('static', filename='book_detail.js')}}"></script>
+<script src="{{url_for('static', filename='book_mark.js')}}"></script>
 {{super()}}
 {% endblock %}

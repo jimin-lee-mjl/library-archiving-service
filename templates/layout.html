@@ -25,17 +25,11 @@
             <li id='library'>
                 <a href="{{ url_for('book.book_main') }}">Elice Library</a>
             </li>
-            <li id='search_movie'>
-                <a href="#">Search Books</a>
-            </li>
             <li id='book_archive'>
-                <a href="{{ url_for('archive.rental_history') }}">Book Archive</a>
+                <a href="{{ url_for('archive.book_archive') }}">Book Archive</a>
             </li>
             <li id='current_rental'>
-                <a href="{{ url_for('archive.rental_current') }}">Current Rentals</a>
-            </li>
-            <li id='feedback'>
-                <a href="#">Feedback</a>
+                <a href="{{ url_for('archive.mark_archive') }}">Marked Books</a>
             </li>
         </ul>
 

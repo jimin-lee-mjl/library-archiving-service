@@ -1,5 +1,5 @@
 from app import db
-from model import Book, Rental, User
+from model import Book, Rental, User,Comment
 from error_msg import ServiceError
 
 
@@ -61,11 +61,36 @@ class CommentService():
         book.rating = book.calculate_rating()
         db.session.commit()
 
-    def show_comment(self, book_id):
+    def show_comments(self, book_id):
         book = self.get_book(book_id)
         book.comment.reverse()
         return book.comment
-           
+
+    def get_user_comment(self, book_id, user_id):
+        comment = Comment.query.filter(
+            (Comment.book_id == book_id) & (Comment.user_id == user_id)
+        ).first()
+        return comment 
+
+    def update_comment(self, book_id, user_id, content, rating):
+        comment = Comment.query.filter(
+            (Comment.book_id == book_id) & (Comment.user_id == user_id)
+        ).first()
+        comment.update(content, rating)
+        db.session.commit()
+
+    def delete_comment(self, book_id, user_id):
+        comment = Comment.query.filter(
+            (Comment.book_id == book_id) & (Comment.user_id == user_id)
+        ).first()
+        db.session.delete(comment)
+        db.session.commit()
+
+    def update_rating(self, book_id):
+        book = self.get_book(book_id)
+        book.rating = book.calculate_rating()
+        db.session.commit()
+
 
 book_service = BookService()
 comment_service = CommentService()

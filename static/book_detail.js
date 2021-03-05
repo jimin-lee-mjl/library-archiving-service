@@ -1,7 +1,9 @@
 const input = document.querySelector('input#rating'),
-spans = document.querySelectorAll('span.comment-star');
+spans = document.querySelectorAll('span.comment-star'),
+update_btn = document.querySelector('#update_btn');
 
 
+// 별점 주기
 function fillStars(value) {
     for (let i=0; i<value; i++) {
         spans[i].classList.add('glyphicon-star');
@@ -29,9 +31,24 @@ function getRatingValue() {
 }
 
 
+// comment 업데이트 
+function handleUpdateBtn(event) {
+    const update_field = document.querySelector('.comment_field-wrapper');
+    const cancel_btn = document.querySelector('#cancel_btn');
+    event.preventDefault();
+    update_field.classList.remove('invisible');
+    cancel_btn.addEventListener('click', function(event) {
+        event.preventDefault();
+        update_field.classList.add('invisible');
+    })
+}
+
+
 function init() {
     getRatingValue();
+    update_btn.addEventListener('click', handleUpdateBtn);
 }
+
 
 init();
 

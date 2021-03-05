@@ -45,3 +45,19 @@ p {
     display: flex;
     justify-content: space-between;
 }
+
+.invisible {
+    display: none !important;
+    content: none;
+}
+
+.comment-error {
+    text-align: center;
+    width: 300px;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+#cancel_btn {
+    margin-right: 10px;
+}

@@ -55,31 +55,36 @@ class Book(db.Model):
 
     def calculate_rating(self):
         total = 0
-        for comment in self.comment:
-            rating = int(comment.rating)
-            total += rating
-        total_rating = round(total/len(self.comment))
-        return total_rating
+        if self.comment:
+            for comment in self.comment:
+                rating = int(comment.rating)
+                total += rating
+            total = round(total/len(self.comment))
+        return total
 
 
 class Rental(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     book_id = db.Column(db.Integer, db.ForeignKey(Book.id))
     user_id = db.Column(db.Integer, db.ForeignKey(User.id))
-    rental_date = db.Column(db.Date, default=(datetime.now()+timedelta(hours=9)).date())
+    rental_date = db.Column(db.Date, default=datetime.now().date())
     return_date = db.Column(db.Date)
     user_id_history = db.Column(db.Integer)
     book_detail = db.relationship('Book')
 
     def return_book(self):
-        self.return_date = (datetime.now()+timedelta(hours=9)).date()
+        self.return_date = datetime.now().date()
 
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text)
     rating = db.Column(db.Integer)
-    created_at = db.Column(db.Date, default=(datetime.now()+timedelta(hours=9)).date())
+    created_at = db.Column(db.Date, default=datetime.now().date())
     book_id = db.Column(db.Integer, db.ForeignKey(Book.id))
     user_id = db.Column(db.Integer, db.ForeignKey(User.id))
+
+    def update(self, content, rating):
+        self.content = content
+        self.rating = rating
 

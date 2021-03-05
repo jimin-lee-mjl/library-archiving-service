@@ -2,7 +2,15 @@
 {% import 'components/rating.html' as star %}
 {% import 'components/button.html' as button %}
 
-{% macro card(book, endpoint='', id='', value='', extra='', img='', btn=False, no_stock=False) -%}
+{% macro card(book, 
+              endpoint='', 
+              id='', 
+              value='', 
+              extra='', 
+              img='', 
+              btn=False, 
+              comment_btn=False, 
+              no_stock=False) -%}
 <div class="col-sm-6 col-md-4 card">
     <div class="thumbnail">
         <img src="{{ img }}../{{ book.image }}" alt="{{ book.name }}">
@@ -14,6 +22,15 @@
             <p>{{ extra }}</p>
             {% if btn %}
                 <p>{{ button.button(endpoint=endpoint, id=id,  value=value, no_stock=no_stock) }}</p>
+            {% endif %}
+            {% if comment_btn%}
+                <p>
+                    <a href="{{ url_for('archive.manage_comment', book_id=book.id) }}" 
+                       type="button" 
+                       class="btn btn-primary custom-btn">
+                        감상평 관리
+                    </a>
+                </p>
             {% endif %}
         </div>
     </div>

@@ -8,7 +8,7 @@
         <img src="{{ img }}../{{ book.image }}" alt="{{ book.name }}">
         <div class="caption">
             <a href="{{ url_for('book.book_detail', book_id=book.id) }}">
-                <h3>{{ book.name }}</h3>
+                <h4>{{ book.name }}</h4>
             </a>
             <p>{{ star.star(book.rating) }}</p>
             <p>{{ extra }}</p>

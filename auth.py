@@ -11,7 +11,8 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 from functools import wraps
-from db import db, User
+from app import db
+from model import User
 from form import RegisterForm, LoginForm
 from error_msg import AuthError
 
@@ -46,7 +47,7 @@ def register():
         exist_user = User.query.filter_by(email=email).first()
 
         if exist_user:
-            flash(AuthError.email.inavailable, 'auth_error')
+            flash(AuthError.email.INAVAILABLE, 'auth_error')
         else:
             hashed_pw = generate_password_hash(password, method="sha256")
             new_user = User(
@@ -71,9 +72,9 @@ def login():
         exist_user = User.query.filter_by(email=email).first()
 
         if not exist_user:
-            flash(AuthError.email.no_match, 'auth_error')
+            flash(AuthError.email.NO_MATCH, 'auth_error')
         elif not check_password_hash(exist_user.password, password):
-            flash(AuthError.password.inavailable, 'auth_error')
+            flash(AuthError.password.INAVAILABLE, 'auth_error')
         else:
             session['user_id'] = exist_user.id
             return redirect(url_for('main.dashboard'))

@@ -2,12 +2,32 @@
     text-align: center;
 }
 
-.card-wrapper {
+/* .card-wrapper {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     flex-wrap: wrap;
+} */
+
+.card-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.card-wrapper::before {
+    content:none;
 }
 
 .card {
     margin-right: 70px;
+}
+
+.thumbnail img {
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
+}
+
+.thumbnail {
+    width: 250px;
+    height: 500px;
 }

@@ -13,7 +13,7 @@
 <div class="row card-wrapper">
 {% for book in book_list.items %}
     {{ card.card(book=book, 
-                 endpoint=url_for('book.rental'), 
+                 endpoint=url_for('book.rental_book'), 
                  id=book.id,  
                  value="대여하기", 
                  extra='{}권 남음'.format(book.available),

@@ -15,6 +15,7 @@ from app import db
 from model import User
 from form import RegisterForm, LoginForm
 from error_msg import AuthError
+from service import login_service
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -43,20 +44,12 @@ def register():
     if form.validate_on_submit():
         username = form.username.data
         email = form.email.data
-        password = form.password.data
-        exist_user = User.query.filter_by(email=email).first()
+        password = generate_password_hash(form.password.data, method="sha256")
 
-        if exist_user:
+        if login_service.user_exists(email):
             flash(AuthError.email.INAVAILABLE, 'auth_error')
         else:
-            hashed_pw = generate_password_hash(password, method="sha256")
-            new_user = User(
-                username=username,
-                email=email,
-                password=hashed_pw
-            )
-            db.session.add(new_user)
-            db.session.commit()
+            login_service.register_user(username, email, password)
             return redirect(url_for('.login'))
 
     return render_template('auth/register.html', form=form)
@@ -66,17 +59,17 @@ def register():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        session.pop('user_id', None)
+        login_service.logout_user()
         email = form.email.data
         password = form.password.data
-        exist_user = User.query.filter_by(email=email).first()
+        exist_user = login_service.user_exists(email)
 
         if not exist_user:
             flash(AuthError.email.NO_MATCH, 'auth_error')
         elif not check_password_hash(exist_user.password, password):
             flash(AuthError.password.INAVAILABLE, 'auth_error')
         else:
-            session['user_id'] = exist_user.id
+            login_service.login_user(email)
             return redirect(url_for('main.dashboard'))
 
     return render_template('auth/login.html', form=form)
@@ -85,5 +78,5 @@ def login():
 @bp.route('/logout')
 @login_required
 def logout():
-    session.clear()
+    login_service.logout_user()
     return render_template('auth/login_required.html')

@@ -35,9 +35,7 @@ def manage_comment(book_id):
 def create_comment(book_id):
     content = request.form['comment']
     rating = request.form['rating']
-    if not content:
-        flash(CommentError.content.REQUIRED, 'comment_error')
-    elif not rating:
+    if not rating:
         flash(CommentError.star.REQUIRED, 'comment_error')
     else:
         comment_service.create_comment(book_id, g.user.id, content, rating)

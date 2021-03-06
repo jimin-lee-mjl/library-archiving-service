@@ -1,35 +1,34 @@
-// function handleNavClick() {
-//     const ul = document.querySelector('nav#sidebar ul');
-//     const navs = ul.querySelectorAll('li');
-//     navs.forEach(nav => nav.addEventListener('click', function() {
-//         navs.forEach(_nav => {
-//             if (_nav.classList.contains('active')) {
-//                 _nav.classList.remove('active');
-//             }
-//         })
-//         nav.classList.add('active');
-//     }))
-// }
+const ul = document.querySelector('nav#sidebar ul.navigation');
+const navs = ul.querySelectorAll('li');
 
-// function init() {
-//     handleNavClick();
-// }
 
-// init();
-
-$(function() {
-    const $ul = $('nav#sidebar ul');
-    const $navs = $ul.find('li');
-
-    const nav_id = localStorage.getItem('nav-id');
-    if (nav_id) {
-        $navs.find('#'+nav_id).addClass('active');
-    }
-    
-    $navs.on('click', function() {
-        $navs.find('.active').removeClass('active');
-        $(this).addClass('active');
-        const $id = $(this).attr('id');
-        localStorage.setItem('nav-id', $id);
+function activateNav(nav_id) {
+    navs.forEach(li => {
+        if (li.dataset.id === nav_id) {
+            li.classList.add('active');
+        }
     })
-});
+}
+
+
+function highlightNav() {
+    if (location.pathname.split('/')[1] === 'book') {
+        activateNav('library');
+    } else if (location.pathname.split('/')[1] === 'archive') {
+        if (location.pathname.split('/')[2] === 'marks') {
+            activateNav('marked_books');
+        } else {
+            activateNav('book_archive');
+        }
+    } else {
+        activateNav('dashboard');
+    }
+}
+
+
+function init() {
+    highlightNav();
+}
+
+
+init();

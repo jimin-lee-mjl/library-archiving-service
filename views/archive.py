@@ -20,7 +20,7 @@ def mark_archive():
 def book_archive():
     books = Rental.query.filter(
         (Rental.user_id_history == g.user.id) & (Rental.return_date)
-    ).order_by(Rental.rental_date.desc()).all()
+    ).order_by(Rental.return_date.desc()).all()
     return render_template('book_archive.html', books=books) 
 
 

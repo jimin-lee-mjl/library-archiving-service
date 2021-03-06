@@ -17,18 +17,18 @@
             <h3>Book & Movie Archives</h3>
         </div>
 
-        <ul class="list-unstyled components">
+        <ul class="list-unstyled components navigation">
             <p>Have a lovely day</p>
-            <li id='dashboard'>
+            <li id='dashboard' data-id='dashboard'>
                 <a href="{{ url_for('main.dashboard') }}">Dashboard</a>
             </li>
-            <li id='library'>
+            <li id='library' data-id='library'>
                 <a href="{{ url_for('book.book_main') }}">Elice Library</a>
             </li>
-            <li id='book_archive'>
+            <li id='book_archive' data-id='book_archive'>
                 <a href="{{ url_for('archive.book_archive') }}">Book Archive</a>
             </li>
-            <li id='current_rental'>
+            <li id='marked_books' data-id='marked_books'>
                 <a href="{{ url_for('archive.mark_archive') }}">Marked Books</a>
             </li>
         </ul>

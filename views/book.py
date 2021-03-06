@@ -51,4 +51,4 @@ def rental_book():
 def return_book():
     book_id = request.form['book_id']
     book_service.return_book(book_id, g.user.id)
-    return redirect(url_for('main.dashboard'))
+    return redirect(url_for('archive.book_archive'))

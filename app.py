@@ -10,7 +10,7 @@ migrate = Migrate()
 
 def create_app():
     app = Flask(__name__)
-    
+
     app.config['SECRET_KEY'] = SECRET_KEY
     app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -26,7 +26,7 @@ def create_app():
         from views import book
         from views import archive
         from views import main
-        
+
         db.create_all()
         app.register_blueprint(auth.bp)
         app.register_blueprint(mark.bp)
@@ -36,6 +36,5 @@ def create_app():
 
         # from library import create_library
         # create_library() 
-    
-    return app
 
+    return app

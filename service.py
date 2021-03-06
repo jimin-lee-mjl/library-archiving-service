@@ -1,3 +1,4 @@
+from flask import session
 from datetime import datetime
 from app import db
 from model import Book, Rental, User, Comment, Mark
@@ -131,6 +132,28 @@ class MarkService():
         return user.check_mark(book_id)
 
 
+class LoginService():
+    def user_exists(self, email):
+        exist_user = User.query.filter_by(email=email).first()
+        return exist_user
+
+    def register_user(self, username, email, password):
+        new_user = User(
+            username=username,
+            email=email,
+            password=password
+        )
+        db.session.add(new_user)
+        db.session.commit()
+
+    def login_user(self, email):
+        session['user_id'] = self.user_exists(email).id
+
+    def logout_user(self):
+        session.pop('user_id', None)
+
+
 book_service = BookService()
 comment_service = CommentService()
 mark_service = MarkService()
+login_service = LoginService()

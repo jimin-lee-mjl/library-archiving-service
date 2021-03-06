@@ -40,6 +40,11 @@ class BookService():
         user = self.get_user(user_id)
         return user.check_rental(book_id)
 
+    def get_search_book(self, word):
+        search = '%{}%'.format(word)
+        result = Book.query.filter(Book.name.like(search)).all()
+        return result
+
 
 class CommentService():
     def get_book(self, book_id):

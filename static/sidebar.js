@@ -14,6 +14,8 @@ function activateNav(nav_id) {
 function highlightNav() {
     if (location.pathname.split('/')[1] === 'book') {
         activateNav('library');
+    } else if (location.pathname.split('/')[1] === 'search') {
+        activateNav('search');
     } else if (location.pathname.split('/')[1] === 'archive') {
         if (location.pathname.split('/')[2] === 'marks') {
             activateNav('marked_books');

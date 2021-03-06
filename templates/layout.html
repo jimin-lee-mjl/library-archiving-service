@@ -51,7 +51,6 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="{{url_for('static', filename='sidebar.js')}}"></script>
+<script src="{{url_for('static', filename='js/sidebar.js')}}"></script>
 {{super()}}
 {% endblock %}

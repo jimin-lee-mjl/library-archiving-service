@@ -34,41 +34,6 @@
 <hr />
 
 <!-- comment -->
-<div class="comment_field-wrapper">
-    <div class="container pb-cmnt-container">
-        <div class="row">
-            <div class="col-md-6 col-md-offset-3">
-                <div class="panel panel-info">
-                    <div class="panel-body">
-                        <form class="form-inline" action="{{ url_for('book.create_comment', book_id=book.id) }}" method="POST">
-                            <textarea class="pb-cmnt-textarea" name="comment" required></textarea>
-                            <div class="btn-group">
-                                <input type="hidden" name="rating" id="rating">
-                                <span data-rating="1" 
-                                      class="glyphicon glyphicon-star-empty comment-star" 
-                                      style="color: #4CAF50;"></span>
-                                <span data-rating="2" 
-                                      class="glyphicon glyphicon-star-empty comment-star" 
-                                      style="color: #4CAF50;"></span>
-                                <span data-rating="3" 
-                                      class="glyphicon glyphicon-star-empty comment-star" 
-                                      style="color: #4CAF50;"></span>
-                                <span data-rating="4" 
-                                      class="glyphicon glyphicon-star-empty comment-star" 
-                                      style="color: #4CAF50;"></span>
-                                <span data-rating="5" 
-                                      class="glyphicon glyphicon-star-empty comment-star" 
-                                      style="color: #4CAF50;"></span>
-                            </div>
-                            <input class="btn btn-primary pull-right custom-btn" type="submit" value="감상 남기기">
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-    
 {% for comment in comments %}
 <article class="row comment-wrapper">
     <div class="col-md-10 col-sm-10">
@@ -77,7 +42,7 @@
                 <div class="header-wrapper">
                     <header class="text-left">
                         <span class="comment-user">
-                            <span class="comment-username">{{ comment.user.username }}</span>님의 감상
+                            <span class="comment-username">{{ comment.user.username }}</span>님의 감상평
                         </span>
                         <time class="comment-date" datetime="16-12-2014 01:05">
                             {{ comment.created_at }}

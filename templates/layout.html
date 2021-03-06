@@ -26,18 +26,10 @@
                 <a href="{{ url_for('book.book_main') }}">Elice Library</a>
             </li>
             <li id='search_movie'>
-                <a href="#">Search Movie</a>
+                <a href="#">Search Books</a>
             </li>
-            <li>
-                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Archives</a>
-                <ul class="collapse list-unstyled" id="pageSubmenu">
-                    <li id='book_archive'>
-                        <a href="{{ url_for('archive.rental_history') }}">Book Archive</a>
-                    </li>
-                    <li id='movie_archive'>
-                        <a href="#">Movie Archive</a>
-                    </li>
-                </ul>
+            <li id='book_archive'>
+                <a href="{{ url_for('archive.rental_history') }}">Book Archive</a>
             </li>
             <li id='current_rental'>
                 <a href="{{ url_for('archive.rental_current') }}">Current Rentals</a>

@@ -21,7 +21,9 @@
             <p>{{ star.star(book.rating) }}</p>
             <p>{{ extra }}</p>
             {% if btn %}
-                <p>{{ button.button(endpoint=endpoint, id=id,  value=value, no_stock=no_stock) }}</p>
+                <p>
+                    {{ button.button(endpoint=endpoint, id=id,  value=value, no_stock=no_stock) }}
+                </p>
             {% endif %}
             {% if comment_btn%}
                 <p>

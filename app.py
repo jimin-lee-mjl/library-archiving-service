@@ -22,12 +22,14 @@ def create_app():
     # any extensions using app as current_app should be inside
     with app.app_context():
         import auth
+        import mark
         from views import book
         from views import archive
         from views import main
         
         db.create_all()
         app.register_blueprint(auth.bp)
+        app.register_blueprint(mark.bp)
         app.register_blueprint(book.bp)
         app.register_blueprint(archive.bp)
         app.register_blueprint(main.bp)

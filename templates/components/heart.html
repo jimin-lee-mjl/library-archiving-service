@@ -1,0 +1,13 @@
+{% extends 'bootstrap/base.html' %}
+
+{% macro heart(marked, book_id) -%}
+{%  if marked %}
+<span class="glyphicon glyphicon-heart heart-mark" 
+      style="color:#e84118"
+      data-id="{{ book_id }}"></span>
+{% else %}
+<span class="glyphicon glyphicon-heart-empty heart-mark" 
+      style="color:#e84118"
+      data-id="{{ book_id }}"></span>
+{% endif %}
+{%- endmacro -%}

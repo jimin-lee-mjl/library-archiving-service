@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+{% import 'components/card.html' as card %}
+
+{% block title%}Dashboard{% endblock %}
+
+{% block main %}
+<div class="page-header" style="text-align: center;">
+    <h1>안녕하세요, {{ username }}!
+        <p><small>현재 {{ length }}권 대여 중입니다.</small></p>
+    </h1>
+</div>
+<div class="row card-wrapper">
+{% for _book in rentals %}
+    {% with book=_book.book_detail %}
+        {{ card.card(book=book, 
+                     endpoint=url_for('book.return_book'), 
+                     id=book.id, 
+                     value="반납하기", 
+                     extra='{} 대여'.format(_book.rental_date),
+                     btn=True) }}
+    {% endwith %}
+{% endfor %}
+</div>
+{% endblock %}

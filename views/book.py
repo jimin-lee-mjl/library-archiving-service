@@ -27,7 +27,7 @@ def book_main(page_num=1):
 @bp.route('/detail/<int:book_id>', methods=['GET', 'POST'])
 @login_required
 def book_detail(book_id):
-    book = Book.query.filter_by(id=book_id).first() # 서비스 객체로 옮기기
+    book = book_service.get_book(book_id) 
     comments = comment_service.show_comments(book_id)
     marked = mark_service.check_mark(book_id, g.user.id)
     return render_template('book_detail.html', book=book, comments=comments, marked=marked)

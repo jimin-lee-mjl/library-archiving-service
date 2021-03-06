@@ -45,6 +45,12 @@ class BookService():
         result = Book.query.filter(Book.name.like(search)).all()
         return result
 
+    def get_book_history(self, user_id):
+        books = Rental.query.filter(
+            (Rental.user_id_history == user_id) & (Rental.return_date)
+        ).order_by(Rental.return_date.desc()).all()
+        return books
+
 
 class CommentService():
     def get_book(self, book_id):

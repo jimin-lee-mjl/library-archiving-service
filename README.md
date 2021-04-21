@@ -1,6 +1,8 @@
 # 📚 도서관 & 책 아카이빙 서비스  
 ## 프로젝트 소개
 
+본 프로젝트는 elice X K-digital Training에서 진행한 개인 웹서비스 제작 프로젝트 입니다. ([깃랩 링크](https://kdt-gitlab.elice.io/001_part2_project-library/team1/library-service-project))
+
 아카이빙 기능을 강점으로 내세우는 책 대출 서비스입니다.  
 
 다음과 같은 서비스를 제공합니다. 

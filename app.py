@@ -1,37 +1,41 @@
-from flask import Flask, g, render_template, url_for, redirect
+from flask import Flask
 from flask_bootstrap import Bootstrap
-from config import SECRET_KEY
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from config import SECRET_KEY, DB_URI
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = SECRET_KEY
-Bootstrap(app)
-
-
-@app.route('/')
-def dashboard():
-    if g.user:
-        return render_template('dash.html', username=g.user.username)
-    else:
-        return redirect(url_for('auth.login'))
+db = SQLAlchemy()
+migrate = Migrate()
 
 
-# any extensions using app as current_app should be inside
-with app.app_context():
-    from db import init_db
-    init_db()
+def create_app():
+    app = Flask(__name__)
+    
+    app.config['SECRET_KEY'] = SECRET_KEY
+    app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-    import auth
-    app.register_blueprint(auth.bp)
+    Bootstrap(app)
+    db.init_app(app)
+    migrate.init_app(app, db)
 
-    from views import book
-    app.register_blueprint(book.bp)
+    # any extensions using app as current_app should be inside
+    with app.app_context():
+        import auth
+        import mark
+        from views import book
+        from views import archive
+        from views import main
+        
+        db.create_all()
+        app.register_blueprint(auth.bp)
+        app.register_blueprint(mark.bp)
+        app.register_blueprint(book.bp)
+        app.register_blueprint(archive.bp)
+        app.register_blueprint(main.bp)
 
-    from views import personal
-    app.register_blueprint(personal.bp)
+        # from library import create_library
+        # create_library() 
+    
+    return app
 
-    # from library import create_library
-    # create_library() 
-
-
-if __name__ == '__main__':
-    app.run

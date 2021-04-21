@@ -1,5 +1,6 @@
 {% extends 'layout.html' %}
 {% import 'components/rating.html' as star %}
+{% import 'components/heart.html' as heart %}
 
 {% block styles %}
 {{super()}}
@@ -21,54 +22,20 @@
     <div class="book_detail-wrapper">
         <p>{{ book.publisher }}</p>
         <p>{{ book.publication_date }} 출간</p>
-        <p>평점 {{ book.rating }}점</p>
+        <p>{{ star.star(book.rating) }}</p>
         <p>총 {{ book.pages }}쪽</p>
         <p>ISBN {{ book.isbn }}</p>
         <p>현재 {{ book.available }}권 남음</p>
-        <a href="{{ book.link }}">
-            <button type="button" class="btn btn-link custom-link"><p>웹 페이지 바로가기</p></button>
-        </a>
+        <p><a href="{{ book.link }}">
+            <button type="button" class="btn btn-link custom-link web-link"><p>웹 페이지 바로가기</p></button>
+        </a></p>
+        <p>{{ heart.heart(marked=marked, book_id=book.id) }}</p>
     </div>
 </div>
 <p>{{ book.description }}</p>
 <hr />
 
 <!-- comment -->
-<div class="comment_field-wrapper">
-    <div class="container pb-cmnt-container">
-        <div class="row">
-            <div class="col-md-6 col-md-offset-3">
-                <div class="panel panel-info">
-                    <div class="panel-body">
-                        <form class="form-inline" action="{{ url_for('book.book_detail', book_id=book.id) }}" method="POST">
-                            <textarea class="pb-cmnt-textarea" name="comment" required></textarea>
-                            <div class="btn-group">
-                                <input type="hidden" name="rating" id="rating">
-                                <span data-rating="1" 
-                                      class="glyphicon glyphicon-star-empty comment-star" 
-                                      style="color: #4CAF50;"></span>
-                                <span data-rating="2" 
-                                      class="glyphicon glyphicon-star-empty comment-star" 
-                                      style="color: #4CAF50;"></span>
-                                <span data-rating="3" 
-                                      class="glyphicon glyphicon-star-empty comment-star" 
-                                      style="color: #4CAF50;"></span>
-                                <span data-rating="4" 
-                                      class="glyphicon glyphicon-star-empty comment-star" 
-                                      style="color: #4CAF50;"></span>
-                                <span data-rating="5" 
-                                      class="glyphicon glyphicon-star-empty comment-star" 
-                                      style="color: #4CAF50;"></span>
-                            </div>
-                            <input class="btn btn-primary pull-right custom-btn" type="submit" value="감상 남기기">
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-    
 {% for comment in comments %}
 <article class="row comment-wrapper">
     <div class="col-md-10 col-sm-10">
@@ -77,7 +44,7 @@
                 <div class="header-wrapper">
                     <header class="text-left">
                         <span class="comment-user">
-                            <span class="comment-username">{{ comment.user.username }}</span>님의 감상
+                            <span class="comment-username">{{ comment.user.username }}</span>님의 감상평
                         </span>
                         <time class="comment-date" datetime="16-12-2014 01:05">
                             {{ comment.created_at }}
@@ -98,6 +65,6 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="{{url_for('static', filename='book_detail.js')}}"></script>
+<script src="{{url_for('static', filename='js/book_mark.js')}}"></script>
 {{super()}}
 {% endblock %}

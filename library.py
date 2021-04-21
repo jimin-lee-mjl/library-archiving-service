@@ -1,6 +1,7 @@
 import csv
 from datetime import datetime
-from db import db, Book
+from app import db
+from model import Book
 
 
 def create_library():

@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+{% import 'components/card.html' as card %}
+
+{% block title%}Mark Archive{% endblock %}
+
+{% block main %}
+<div class="row card-wrapper">
+    {% for _book in marks %}
+        {% with book=_book.book_detail %}
+            {% if service.user_has_book(book.id, user_id) %}
+            {{ card.card(book=book, 
+                endpoint=url_for('book.return_book'), 
+                id=book.id, 
+                value="반납하기", 
+                extra="현재 읽고 있는 책",
+                btn=True) }}
+            {% else %}
+                {{ card.card(book=book, 
+                    endpoint=url_for('book.rental_book'), 
+                    id=book.id,  
+                    value="대여하기", 
+                    extra='{}권 남음'.format(book.available),
+                    btn=True) }}
+            {% endif %}
+        {% endwith %}
+    {% endfor %}
+    </div>
+{% endblock %}

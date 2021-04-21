@@ -3,11 +3,40 @@
 }
 
 .card-wrapper {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-left: 50px;
+}
+
+.card-wrapper::before {
+    content:none;
 }
 
 .card {
     margin-right: 70px;
 }
+
+.thumbnail img {
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
+}
+
+.thumbnail {
+    width: 250px;
+    height: 500px;
+}
+
+/* .btn_form {
+    width: 40%;
+    display: inline-block;
+}
+
+p.btns_container {
+    display: flex;
+    justify-content: center;
+}
+
+.heart-mark {
+    font-size: 20px;
+} */

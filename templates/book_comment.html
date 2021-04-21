@@ -1,0 +1,158 @@
+{% extends 'layout.html' %}
+{% import 'components/rating.html' as star %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet"
+      href="{{url_for('static', filename='book_detail.css')}}">
+<link rel="stylesheet"
+      href="{{url_for('static', filename='comment.css')}}">
+{% endblock %}
+{% block title%}Comment Management{% endblock %}
+
+{% block main %}
+<div class="page-header">
+    <h1>{{ book.name }}
+        <p><small>{{ book.author }}</small></p>
+    </h1>
+</div>
+<div class="book-wrapper">
+    <div class="img-wrapper" style="background-image: url('../../{{ book.image }}');"></div>
+    <div class="book_detail-wrapper">
+        <p>{{ book.publisher }}</p>
+        <p>{{ book.publication_date }} 출간</p>
+        <p>{{ star.star(book.rating) }}</p>
+        <p>총 {{ book.pages }}쪽</p>
+        <p>ISBN {{ book.isbn }}</p>
+        <a href="{{ book.link }}">
+            <button type="button" class="btn btn-link custom-link"><p>웹 페이지 바로가기</p></button>
+        </a>
+    </div>
+</div>
+<p>{{ book.description }}</p>
+<hr />
+
+<!-- comment -->
+{% if comment %}
+<article class="row comment-wrapper">
+    <div class="col-md-10 col-sm-10">
+        <div class="panel panel-default arrow left comments-panel">
+            <div class="panel-body">
+                <div class="header-wrapper">
+                    <header class="text-left">
+                        <span class="comment-user">
+                            나의 감상평
+                        </span>
+                        <time class="comment-date">
+                            {{ comment.created_at }}
+                        </time>
+                    </header>
+                    <p>{{ star.star(comment.rating) }}</p>
+                </div>
+                <div class="comment-post">
+                    <p>
+                        {{ comment.content }}
+                    </p>
+                </div>
+                <div class="btns_wrapper">
+                    <button class="btn btn-primary custom-btn" id="update_btn">수정하기</button>
+                    <form action="{{ url_for('archive.delete_comment', book_id=book.id) }}" method="POST">
+                        <input type="submit" class="btn btn-primary custom-btn" value="삭제하기">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+
+<div class="comment_field-wrapper invisible">
+    <div class="container pb-cmnt-container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-info">
+                    <div class="panel-body">
+                        <form class="form-inline" action="{{ url_for('archive.update_comment', book_id=book.id) }}" method="POST">
+                            <textarea class="pb-cmnt-textarea" name="comment" required>{{ comment.content }}</textarea>
+                            <div class="btn-group">
+                                <input type="hidden" name="rating" id="rating" value="{{ comment.rating }}">
+                                <span data-rating="1" 
+                                      class="glyphicon glyphicon-star-empty comment-star" 
+                                      style="color: #4CAF50;"></span>
+                                <span data-rating="2" 
+                                      class="glyphicon glyphicon-star-empty comment-star" 
+                                      style="color: #4CAF50;"></span>
+                                <span data-rating="3" 
+                                      class="glyphicon glyphicon-star-empty comment-star" 
+                                      style="color: #4CAF50;"></span>
+                                <span data-rating="4" 
+                                      class="glyphicon glyphicon-star-empty comment-star" 
+                                      style="color: #4CAF50;"></span>
+                                <span data-rating="5" 
+                                      class="glyphicon glyphicon-star-empty comment-star" 
+                                      style="color: #4CAF50;"></span>
+                            </div>
+                            <input class="btn btn-primary pull-right custom-btn" type="submit" value="수정하기">
+                            <button class="btn btn-primary pull-right custom-btn" id="cancel_btn">취소</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="comment_field-wrapper">
+    <div class="container pb-cmnt-container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+            {% with errors = get_flashed_messages(category_filter=["comment_error"]) %}
+                {% if errors %}
+                    {%- for msg in errors %}
+                        <div class="alert alert-success alert-dismissible comment-error" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            {{ msg }} 
+                        </div>
+                    {% endfor -%}
+                {% endif %}
+            {% endwith %}
+                <div class="panel panel-info">
+                    <div class="panel-body">
+                        <form class="form-inline" 
+                              action="{{ url_for('archive.create_comment', book_id=book.id) }}" 
+                              method="POST">
+                            <textarea class="pb-cmnt-textarea" name="comment" required></textarea>
+                            <div class="btn-group">
+                                <input type="hidden" name="rating" id="rating">
+                                <span data-rating="1" 
+                                      class="glyphicon glyphicon-star-empty comment-star" 
+                                      style="color: #4CAF50;"></span>
+                                <span data-rating="2" 
+                                      class="glyphicon glyphicon-star-empty comment-star" 
+                                      style="color: #4CAF50;"></span>
+                                <span data-rating="3" 
+                                      class="glyphicon glyphicon-star-empty comment-star" 
+                                      style="color: #4CAF50;"></span>
+                                <span data-rating="4" 
+                                      class="glyphicon glyphicon-star-empty comment-star" 
+                                      style="color: #4CAF50;"></span>
+                                <span data-rating="5" 
+                                      class="glyphicon glyphicon-star-empty comment-star" 
+                                      style="color: #4CAF50;"></span>
+                            </div>
+                            <input class="btn btn-primary pull-right custom-btn" type="submit" value="감상평 남기기">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{{url_for('static', filename='js/book_comment.js')}}"></script>
+{{super()}}
+{% endblock %}

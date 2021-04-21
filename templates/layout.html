@@ -17,33 +17,22 @@
             <h3>Book & Movie Archives</h3>
         </div>
 
-        <ul class="list-unstyled components">
+        <ul class="list-unstyled components navigation">
             <p>Have a lovely day</p>
-            <li id='dashboard'>
-                <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <li id='dashboard' data-id='dashboard'>
+                <a href="{{ url_for('main.dashboard') }}">Dashboard</a>
             </li>
-            <li id='library'>
+            <li id='library' data-id='library'>
                 <a href="{{ url_for('book.book_main') }}">Elice Library</a>
             </li>
-            <li id='search_movie'>
-                <a href="#">Search Movie</a>
+            <li id='search' data-id='search'>
+                <a href="{{ url_for('main.search_book') }}">Search Books</a>
             </li>
-            <li>
-                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Archives</a>
-                <ul class="collapse list-unstyled" id="pageSubmenu">
-                    <li id='book_archive'>
-                        <a href="{{ url_for('personal.book_archive') }}">Book Archive</a>
-                    </li>
-                    <li id='movie_archive'>
-                        <a href="#">Movie Archive</a>
-                    </li>
-                </ul>
+            <li id='book_archive' data-id='book_archive'>
+                <a href="{{ url_for('archive.book_archive') }}">Book Archive</a>
             </li>
-            <li id='current_rental'>
-                <a href="{{ url_for('personal.personal_rental') }}">Current Rentals</a>
-            </li>
-            <li id='feedback'>
-                <a href="#">Feedback</a>
+            <li id='marked_books' data-id='marked_books'>
+                <a href="{{ url_for('archive.mark_archive') }}">Marked Books</a>
             </li>
         </ul>
 
@@ -62,7 +51,6 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="{{url_for('static', filename='sidebar.js')}}"></script>
+<script src="{{url_for('static', filename='js/sidebar.js')}}"></script>
 {{super()}}
 {% endblock %}

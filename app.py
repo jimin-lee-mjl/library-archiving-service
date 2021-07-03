@@ -1,9 +1,11 @@
+import os
+from dotenv import load_dotenv
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from config import SECRET_KEY, DB_URI
 
+load_dotenv()
 db = SQLAlchemy()
 migrate = Migrate()
 
@@ -11,8 +13,8 @@ migrate = Migrate()
 def create_app():
     app = Flask(__name__)
 
-    app.config['SECRET_KEY'] = SECRET_KEY
-    app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     Bootstrap(app)

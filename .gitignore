@@ -2,3 +2,4 @@ library-env/
 config.py
 __pycache__/
 migrations/
+.env

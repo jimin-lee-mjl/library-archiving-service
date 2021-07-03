@@ -42,4 +42,4 @@
 
 ## 데모
 
-[elice-kdt-ai-track-vm-racer-40.koreacentral.cloudapp.azure.com](http://elice-kdt-ai-track-vm-racer-40.koreacentral.cloudapp.azure.com)
+[데모 페이지 바로가기](https://library-archive.herokuapp.com/)

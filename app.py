@@ -16,7 +16,6 @@ def create_app():
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_POOL_RECYCLE'] = 1800
 
     Bootstrap(app)
     db.init_app(app)
@@ -37,7 +36,7 @@ def create_app():
         app.register_blueprint(archive.bp)
         app.register_blueprint(main.bp)
 
-        # from library import create_library
-        # create_library() 
+        from library import create_library
+        create_library() 
 
     return app

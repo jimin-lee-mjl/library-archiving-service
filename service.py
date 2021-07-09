@@ -138,11 +138,10 @@ class LoginService():
         return exist_user
 
     def register_user(self, username, email, password):
-        new_user = User(
-            username=username,
-            email=email,
-            password=password
-        )
+        new_user = User()
+        new_user.email = email
+        new_user.username = username
+        new_user.password = password
         db.session.add(new_user)
         db.session.commit()
 

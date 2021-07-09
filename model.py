@@ -92,9 +92,11 @@ class Rental(db.Model):
     return_date = db.Column(db.Date)
     user_id_history = db.Column(db.Integer)
     book_detail = db.relationship('Book', backref='rental')
+    is_returned = db.Column(db.Boolean, default=False)
 
     def return_book(self):
         self.return_date = datetime.now().date()
+        self.is_returned = True
 
 
 class Comment(db.Model):

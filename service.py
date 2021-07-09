@@ -48,7 +48,7 @@ class BookService():
 
     def get_book_history(self, user_id):
         books = Rental.query.filter(
-            (Rental.user_id_history == user_id) & (Rental.return_date)
+            (Rental.user_id_history == user_id) & (Rental.is_returned == True)
         ).order_by(Rental.return_date.desc()).all()
         return books
 

@@ -36,7 +36,7 @@ def create_app():
         app.register_blueprint(archive.bp)
         app.register_blueprint(main.bp)
 
-        from library import create_library
-        create_library() 
+        # from library import create_library
+        # create_library() 
 
     return app
